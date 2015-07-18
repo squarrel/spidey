@@ -1,0 +1,81 @@
+#:kivy 1.9.0
+
+SpideyGame:
+
+<SpideyGame>:
+	gameworld: gameworld
+	app: app
+	GameWorld:
+		id: gameworld
+		gamescreenmanager: gamescreenmanager
+		size_of_gameworld: 100*1024
+		zones: {'general': 20000}
+		PositionSystem2D:
+			system_id: 'position'
+			gameworld: gameworld
+			zones: ['general']
+		RotateSystem2D:
+			system_id: 'rotate'
+			gameworld: gameworld
+			zones: ['general']	
+		RotateRenderer:
+			gameworld: gameworld
+			zones: ['general']
+			shader_source: 'assets/glsl/positionrotateshader.glsl'
+		CymunkPhysics:
+			gameworld: root.gameworld
+			zones: ['general']
+	GameScreenManager:
+		id: gamescreenmanager
+		size: root.size
+		pos: root.pos
+		gameworld: gameworld
+
+<GameScreenManager>:
+	MenuScreen:
+		id: menu_screen
+	MainScreen:
+		id: main_screen
+	MessageScreen:
+		id: message_screen
+		
+<MenuScreen@GameScreen>:
+	name: 'menu'
+	FloatLayout:
+		Button:
+			text: 'Play'
+			size_hint: (.2, .1)
+			pos_hint: {'x': .45, 'y': .55}
+			on_press: root.manager.current = 'main'
+		Button:
+			text: 'Settings'
+			size_hint: (.2, .1)
+			pos_hint: {'x': .45, 'y': 45}
+			on_press: root.manager.current = 'main'
+		DebugPanel:
+			size_hint: (.2, .1)
+			pos_hint: {'x': .225, 'y': .025}
+			
+<MainScreen@GameScreen>:
+	name: 'main'
+	FloatLayout:
+		Label:
+			text: 'The Main'
+			size_hint: (.2, .1)
+			pos_hint: {'x': .45, 'y': .55}
+				
+<MessageScreen@GameScreen>:
+	name: 'message'
+	FloatLayout:
+		Label:
+			text: 'The Message'
+			
+<DebugPanel>:
+	Label:
+		pos: root.pos
+		size: root.size
+		font_size: root.size[1] * .5
+		halign: 'center'
+		valign: 'middle'
+		color: (1, 1, 1, 1)
+		text: 'FPS: ' + root.fps if root.fps != None else 'FPS:'
