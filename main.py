@@ -11,18 +11,20 @@ from helpers import solve, part_of
 import kivent_core
 import kivent_cymunk
 from kivent_core.gameworld import GameWorld
-from kivent_core.managers.resource_managers import texture_manager
+from kivent_core.managers.resource_managers import (
+	texture_manager, model_manager)
 from kivent_core.rendering.vertmesh import VertMesh
 from kivent_core.systems.renderers import RotateRenderer
 from kivent_core.systems.position_systems import PositionSystem2D
 from kivent_core.systems.rotate_systems import RotateSystem2D
+from kivent_core.systems.gamesystem import GameSystem
 from kivy.properties import StringProperty, NumericProperty, ListProperty
 from functools import partial
+from beetle_system import BeetleSystem
 
-texture_manager.load_atlas('assets/background_objects.atlas')
 
 ALIVE = True
-LEVELS = [16, 36, 64]
+LEVELS = [16, 25, 36, 49, 64]
 
 class SpideyGame(Widget):
 
@@ -52,11 +54,12 @@ class SpideyGame(Widget):
 	prev_len = 0
 	divisions = int(math.sqrt(current_level))
 	solve = solve.Solve()
+	beetles = []
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
 		self.gameworld.init_gameworld(
-			['cymunk_physics', 'rotate_renderer', 'rotate', 'position'],
+			['renderer', 'position'],
 			callback=self.init_game)
 
 		'''# keyboard
@@ -83,96 +86,12 @@ class SpideyGame(Widget):
 		solve.win_y = self.win_y
 
 	def init_game(self):
-		state = 'menu'
+		state = 'main'
 		self.setup_states()
 		self.set_state(state)
-		self.draw_some_stuff()
-		Clock.schedule_interval(self.update, 1.0 / 60.0)
-
-	def destroy_created_entity(self, ent_id, dt):
-		self.gameworld.remove_entity(ent_id)
-		self.app.count -= 1
-
-	def draw_some_stuff(self):
-		size = Window.size
-		w, h = size[0], size[1]
-		delete_time = 2.5
-		create_asteroid = self.create_asteroid
-		destroy_ent = self.destroy_created_entity
-		for x in range(100):
-			pos = (randint(0, w), randint(0, h))
-			ent_id = create_asteroid(pos)
-			Clock.schedule_once(partial(destroy_ent, ent_id), delete_time)
-		self.app.count += 100
-
-	def create_asteroid(self, pos):
-		x_vel = randint(-500, 500)
-		y_vel = randint(-500, 500)
-		angle = radians(randint(-360, 360))
-		angular_velocity = radians(randint(-150, -150))
-		shape_dict = {'inner_radius': 0, 'outer_radius': 20,
-			'mass': 50, 'offset': (0, 0)}
-		col_shape = {'shape_type': 'circle', 'elasticity': .5,
-			'collision_type': 1, 'shape_info': shape_dict, 'friction': 1.0}
-		col_shapes = [col_shape]
-		physics_component = {'main_shape': 'circle',
-			'velocity': (x_vel, y_vel),
-			'position': pos, 'angle': angle,
-			'angular_velocity': angular_velocity,
-			'vel_limit': 250,
-			'ang_vel_limit': angular_velocity,
-			'vel_limit': 250,
-			'ang_vel_limit': radians(200),
-			'mass': 50, 'col_shapes': col_shapes}
-		create_component_dict = {'cymunk_physics': physics_component,
-			'rotate_renderer': {'texture': 'asteroid1',
-			'size': (45, 45),
-			'render': True},
-			'position': pos, 'rotate': 0, }
-		component_order = ['position', 'rotate', 'rotate_renderer',
-			'cymunk_physics',]
-		return self.gameworld.init_entity(
-			create_component_dict, component_order)
-
-	# The main update section
-	def update(self, dt):
-		'''
-		# char and background texture movement
-		if self.go_right:
-			self.char_x += self.change_x
-			self.t += .1
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_left:
-			self.char_x -= self.change_x
-			self.t -= .1
-			#self.ani = 'pas_ani.zip'
-		elif self.go_up:
-			self.char_y += self.change_y
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_down:
-			self.char_y -= self.change_y
-			#self.ani = 'pas_ani.zip'	
-		else: self.ani = 'data/pauk.jpg'	
-
-		# collisions
-		self.character_1.hit(self.ball)
-		self.character_2.hit(self.character_1)
-
-		# ai movement of char 2. not very smart
-		self.char2_x += self.speed_char2
-		if self.char2_x >= .6:
-			self.speed_char2 = -.001
-		if self.char2_x <= .2:
-			self.speed_char2 = .001
-
-		# ai movement of ball
-		self.ball_x += self.speed_char3
-		if self.ball_x >= .9:
-			self.speed_char3 = -.004
-		if self.ball_x <= .1:
-			self.speed_char3 = .004'''
-
-		self.gameworld.update(dt)
+		self.beetle_system.start()
+		#self.draw_stuff()
+		#Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
@@ -192,6 +111,12 @@ class SpideyGame(Widget):
 			systems_removed=[], systems_paused=[],
 			systems_unpaused=['rotate_renderer'],
 			screenmanager_screen='message')
+			
+		self.gameworld.add_state(state_name='settings',
+			systems_added=['rotate_renderer'],
+			systems_removed=[], systems_paused=[],
+			systems_unpaused=['rotate_renderer'],
+			screenmanager_screen='settings')
 
 	def set_state(self, *args):
 		self.gameworld.state = args[0]
@@ -251,32 +176,6 @@ class SpideyGame(Widget):
 		self.draw_web()
 		print "touched"
 		#return True
-
-	def print_boxes(self, x, y):
-		i = 1
-		j = 1
-		k = 1
-		while i <= len(self.slices) - 1:
-			while j <= len(self.slices) - 1:
-				#print j - 1, j
-				#print i - 1, i
-				#print "slices[j]", self.slices[j]
-				#print self.win_x * self.slices[j-1], self.win_x * self.slices[j], x
-				#print self.win_y * self.slices[i-1], self.win_y * self.slices[i], y
-				if self.win_x * self.slices[j-1] < x <= self.win_x * self.slices[j] \
-				and self.win_y * self.slices[i-1] < y < self.win_y * self.slices[i] \
-				and self.boxes[k] == False:
-					#print "Box", i, j
-					self.boxes[k] = True
-					with self.canvas.after:
-						color = Color(.7, .7, .7, .3)
-						Rectangle(size=(self.win_x * self.slices[1], self.win_y * self.slices[1]),
-							pos=(self.win_x * self.slices[j-1], self.win_y * self.slices[i-1]))
-				j += 1
-				k += 1
-
-			j = 1
-			i += 1
 
 	# add points to the map
 	def draw_web(self):
