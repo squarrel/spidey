@@ -1,4 +1,5 @@
 from kivy.core.window import Window
+from kivy.factory import Factory
 
 
 win_x = Window.size[0]
@@ -31,3 +32,5 @@ class Boxes(Widget):
 
 			j = 1
 			i += 1
+
+Factory.register('Boxes', cls=Boxes)

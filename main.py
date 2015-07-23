@@ -21,16 +21,11 @@ from kivent_core.systems.gamesystem import GameSystem
 from kivy.properties import StringProperty, NumericProperty, ListProperty
 from functools import partial
 from beetle_system import BeetleSystem
+from boxes import Boxes
 
-
-ALIVE = True
-LEVELS = [16, 25, 36, 49, 64]
 
 class SpideyGame(Widget):
 
-	current_level = LEVELS[0]
-	win_x = Window.size[0]
-	win_y = Window.size[1]
 	char_x = NumericProperty(.1)
 	char_y = NumericProperty(.1)
 	char2_x = NumericProperty(.3)
@@ -44,17 +39,6 @@ class SpideyGame(Widget):
 	go_left = False
 	go_up = False
 	go_down = False
-
-	boxes = {}
-	slices = []
-	intersections = {}
-	crosspoints = []
-	points = ListProperty([500, 500])
-	points2 = ListProperty([400, 400])
-	prev_len = 0
-	divisions = int(math.sqrt(current_level))
-	solve = solve.Solve()
-	beetles = []
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
