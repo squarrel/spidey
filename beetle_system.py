@@ -12,7 +12,7 @@ model_manager.load_textured_rectangle(4, 10., 10., 'star1', 'star1-4-2')
 
 win_x = Window.size[0]
 win_y = Window.size[1]
-	
+
 class BeetleSystem(GameSystem):
 
 	beetles_count = 0
@@ -24,10 +24,10 @@ class BeetleSystem(GameSystem):
 	def start(self):
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
-		
+
 	def draw_stuff(self):
 		dir_from = choice(['N', 'S', 'W', 'E'])
-		
+
 		if dir_from == 'N':
 			x, y = randint(0, win_x), win_y + (win_y / 20)
 		elif dir_from == 'S':
@@ -72,23 +72,7 @@ class BeetleSystem(GameSystem):
 			elif dir_from == 'E':
 				pos.x -= .15
 
-		'''# char and background texture movement
-		if self.go_right:
-			self.char_x += self.change_x
-			self.t += .1
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_left:
-			self.char_x -= self.change_x
-			self.t -= .1
-			#self.ani = 'pas_ani.zip'
-		elif self.go_up:
-			self.char_y += self.change_y
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_down:
-			self.char_y -= self.change_y
-			#self.ani = 'pas_ani.zip'	
-		else: self.ani = 'data/pauk.jpg'	
-
+		'''
 		# collisions
 		self.character_1.hit(self.ball)
 		self.character_2.hit(self.character_1)

@@ -1,19 +1,20 @@
 from kivy.core.window import Window
+from kivy.factory import Factory
+from kivy.clock import Clock
+from kivy.properties import NumericProperty
 from kivent_core.systems.gamesystem import GameSystem
 from kivent_core.managers.resource_managers import (
 	texture_manager, model_manager)
-from kivy.factory import Factory
-from kivy.clock import Clock
 from random import randint, choice
 
-texture_manager.load_atlas('assets/background_objects.atlas')
-model_manager.load_textured_rectangle(4, 7., 7., 'star1', 'star1-4')
-model_manager.load_textured_rectangle(4, 10., 10., 'star1', 'star1-4-2')
 
 win_x = Window.size[0]
 win_y = Window.size[1]
 	
 class SpiderSystem(GameSystem):
+
+	x = NumericProperty(150)
+	y = NumericProperty(150)
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
@@ -23,11 +24,10 @@ class SpiderSystem(GameSystem):
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 		
 	def draw_stuff(self):
-		ent_id = self.create_spider(x, y)
+		ent_id = self.create_spider(self.x, self.y)
 
 	def destroy_created_entity(self, ent_id, dt):
 		self.gameworld.remove_entity(ent_id)
-		#self.app.count -= 1
 
 	def create_spider(self, x, y):
 		vert_mesh_key = choice(['star1-4', 'star1-4-2'])
@@ -36,23 +36,14 @@ class SpiderSystem(GameSystem):
 			'renderer': {'texture': 'star1',
 				'vert_mesh_key': vert_mesh_key},
 			}
-		return self.gameworld.init_entity(create_dict, ['position',
+		self.spider = self.gameworld.init_entity(create_dict, ['position',
 			'renderer'])
 
 	def update(self, dt):
-		entities = self.gameworld.entities
-		for b in xrange(self.beetles_count):
-			#print('b', b)
-			pos = entities[b].position
-			dir_from = self.beetles[b][0]
-			if dir_from == 'N':
-				pos.y -= .15
-			elif dir_from == 'S':
-				pos.y += .15
-			elif dir_from == 'W':
-				pos.x += .15
-			elif dir_from == 'E':
-				pos.x -= .15
+		entity = self.gameworld.entities[self.spider]
+		pos = entity.position
+		pos.x = self.x
+		pos.y = self.y
 
 		'''# char and background texture movement
 		if self.go_right:

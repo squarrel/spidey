@@ -34,23 +34,16 @@ win_y = Window.size[1]
 
 class SpideyGame(Widget):
 
-	char2_x = NumericProperty(.3)
-	char2_y = NumericProperty(.3)
-	ball_x = NumericProperty(.5)
-	ball_y = NumericProperty(.5)
-	change_x = .007
-	change_y = .007
-
 	go_right = False
 	go_left = False
 	go_up = False
 	go_down = False
+	speed = 0.1
 	base = Base()
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
-		self.gameworld.init_gameworld(
-			['renderer', 'position'],
+		self.gameworld.init_gameworld(['renderer', 'position'],
 			callback=self.init_game)
 
 		# Keyboard
@@ -64,16 +57,34 @@ class SpideyGame(Widget):
 		state = 'main'
 		self.setup_states()
 		self.set_state(state)
-		
+
 		self.base.initiate_level()
 		print("Initiated level")
 		self.beetle_system.start()
 		print("Beetle system started")
 		self.spider_system.start()
 		print("Spider system started")
-		
+
 		#self.draw_stuff()
-		#Clock.schedule_interval(self.update, 1.0 / 60.0)
+		Clock.schedule_interval(self.update, 1.0 / 60.0)
+
+	def update(self, dt):
+		# char and background texture movement
+		if self.go_right:
+			self.spider_system.x += self.speed
+			#self.t += .1
+			#self.ani = 'pas_ani.zip'	
+		elif self.go_left:
+			self.spider_system.x -= self.speed
+			#self.t -= .1
+			#self.ani = 'pas_ani.zip'
+		elif self.go_up:
+			self.spider_system.y += self.speed
+			#self.ani = 'pas_ani.zip'	
+		elif self.go_down:
+			self.spider_system.y -= self.speed
+			#self.ani = 'pas_ani.zip'	
+		#else: self.ani = 'data/pauk.jpg'	
 
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
@@ -93,7 +104,7 @@ class SpideyGame(Widget):
 			systems_removed=[], systems_paused=[],
 			systems_unpaused=['renderer'],
 			screenmanager_screen='message')
-			
+
 		self.gameworld.add_state(state_name='settings',
 			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
