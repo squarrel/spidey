@@ -4,6 +4,7 @@ SpideyGame:
 
 <SpideyGame>:
 	gameworld: gameworld
+	spider_system: spider_system
 	beetle_system: beetle_system
 	boxes: boxes
 	web: web
@@ -27,6 +28,11 @@ SpideyGame:
 			size_of_batches: 512
 			size_of_component_block: 128
 			shader_source: 'assets/glsl/positionshader.glsl'
+		SpiderSystem:
+			id: spider_system
+			system_id: 'spider_system'
+			gameworld: gameworld
+			updateable: True
 		BeetleSystem:
 			id: beetle_system
 			system_id: 'beetle_system'

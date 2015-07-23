@@ -6,11 +6,11 @@ from helpers import solve
 
 win_x = Window.size[0]
 win_y = Window.size[1]
+alive = True
+LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
-	ALIVE = True
-	LEVELS = [16, 25, 36, 49, 64]
 	current_level = LEVELS[0]
 
 	boxes = {}
@@ -18,7 +18,6 @@ class Base(object):
 	intersections = {}
 	#crosspoints = []
 	divisions = int(math.sqrt(current_level))
-	beetles = []
 
 	def initiate_level(self):
 		# initiate levels (sort of), prepare boxes

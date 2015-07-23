@@ -22,12 +22,12 @@ class Web(Widget):
 		b = round(win_y * self.char_y, 2)
 		#print "a, b", a, b
 		self.points = self.points + list([a, b])
-		print "self.points", self.points
+		#print "self.points", self.points
 
 		# make calculations with points
 		solve.collect(self.points)
-
 		print('len(solve.crosspoints)', len(solve.crosspoints))
+
 		# draw them crosspoints, if there are new ones.
 		if self.prev_len != len(solve.crosspoints):
 			print('draw')

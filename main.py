@@ -4,10 +4,13 @@ print('imported kivy')
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.properties import StringProperty, NumericProperty, ListProperty
+
 from random import randint, choice
 import math
 from math import radians, pi, sin, cos
-from helpers import solve, part_of
+from functools import partial
+
 import kivent_core
 import kivent_cymunk
 from kivent_core.gameworld import GameWorld
@@ -18,8 +21,8 @@ from kivent_core.systems.renderers import RotateRenderer
 from kivent_core.systems.position_systems import PositionSystem2D
 from kivent_core.systems.rotate_systems import RotateSystem2D
 from kivent_core.systems.gamesystem import GameSystem
-from kivy.properties import StringProperty, NumericProperty, ListProperty
-from functools import partial
+
+from spider_system import SpiderSystem
 from beetle_system import BeetleSystem
 from boxes import Boxes
 from base import Base
@@ -28,7 +31,6 @@ from web import Web
 
 win_x = Window.size[0]
 win_y = Window.size[1]
-solve = solve.Solve()
 
 class SpideyGame(Widget):
 
@@ -51,12 +53,12 @@ class SpideyGame(Widget):
 			['renderer', 'position'],
 			callback=self.init_game)
 
-		'''# keyboard
+		# Keyboard
 		self._keyboard = Window.request_keyboard(self._keyboard_closed, self, 'text')
 		if self._keyboard.widget:
 			pass # what is this?
 		self._keyboard.bind(on_key_down=self._on_keyboard_down)
-		self._keyboard.bind(on_key_up=self._on_keyboard_up)'''
+		self._keyboard.bind(on_key_up=self._on_keyboard_up)
 
 	def init_game(self):
 		state = 'main'
@@ -67,6 +69,9 @@ class SpideyGame(Widget):
 		print("Initiated level")
 		self.beetle_system.start()
 		print("Beetle system started")
+		self.spider_system.start()
+		print("Spider system started")
+		
 		#self.draw_stuff()
 		#Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -105,12 +110,11 @@ class SpideyGame(Widget):
 		self._keyboard.unbind(on_key_up=self._on_keyboard_up)
 		self._keyboard = None
 
-	# capture the keyboard DOWN input and assign commands
+	# capture the keyboard-down input and assign commands
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
 		#print keycode
 		if keycode[1] == 'right':
 			self.go_right = True
-			print "righttt"
 		elif keycode[1] == 'left':
 			self.go_left = True
 		elif keycode[1] == 'up':
@@ -118,21 +122,21 @@ class SpideyGame(Widget):
 		elif keycode[1] == 'down':
 			self.go_down = True
 		elif keycode[1] == 'spacebar':
-			self.draw_web()
+			self.web.draw_web()
 		elif keycode[1] == 'enter':
 			if App.get_running_app().sm.current == 'menu':
-				App.get_running_app().sm.current = 'game'
+				App.get_running_app().sm.current = 'main'
 		elif keycode[1] == 'backspace':
-			if App.get_running_app().sm.current == 'game':
+			if App.get_running_app().sm.current == 'main':
 				App.get_running_app().sm.current = 'menu'
 		elif keycode[1] == 'escape':
 			if App.get_running_app().sm.current == 'menu':
 				exit()
-			elif App.get_running_app().sm.current == 'game':
+			elif App.get_running_app().sm.current == 'main':
 				App.get_running_app().sm.current = 'menu'
 		return True
 
-	# capture the keyboard UP input and assign commands
+	# capture the keyboard-up input and assign commands
 	def _on_keyboard_up(self, keyboard, keycode):
 		if keycode[1] == 'right':
 			self.go_right = False
