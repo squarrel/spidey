@@ -4,14 +4,16 @@ Calculate the crosspoints of lines.
 TODO:
 - neke tacke preseka fale
 '''
+from kivy.core.window import Window
 import part_of
+
+
+win_x = Window.size[0]
+win_y = Window.size[1]
 
 # calculations for determining the interesctions between all the existing lines.
 class Solve(object):
 
-	win_x = 0
-	win_y = 0
-	#intersections = {}
 	crosspoints = []
 	memo = []
 	part_of = part_of.PartOf()
@@ -112,12 +114,13 @@ class Solve(object):
 		#print "x, y", x, y
 
 		# if the intersection is anywhere on the lines themselves, include the intersection
-		if x > 0 and y > 0 and x < self.win_x and y < self.win_y:  # and x != x1 and x != a1 and x != x2 and x != a2:
+		if x > 0 and y > 0 and x < win_x and y < win_y:  # and x != x1 and x != a1 and x != x2 and x != a2:
 			#print "x1, x2, y1, y2, a1, a2, b1, b2, x, y"
 			#print x1, x2, y1, y2, a1, a2, b1, b2, x, y
 			
 			if self.part_of.part_of(x1, x2, y1, y2, a1, a2, b1, b2, x, y):
 				self.crosspoints.append([x, y])
+				print('crosspoints', self.crosspoints)
 				self.memo.append([i, j])
 			else:
 				self.memo.append([i, j])

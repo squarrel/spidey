@@ -13,8 +13,8 @@ win_y = Window.size[1]
 	
 class SpiderSystem(GameSystem):
 
-	x = NumericProperty(150)
-	y = NumericProperty(150)
+	x = NumericProperty(.15)
+	y = NumericProperty(.15)
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
@@ -32,7 +32,7 @@ class SpiderSystem(GameSystem):
 	def create_spider(self, x, y):
 		vert_mesh_key = choice(['star1-4', 'star1-4-2'])
 		create_dict = {
-			'position': (x, y),
+			'position': (win_x * x, win_y * y),
 			'renderer': {'texture': 'star1',
 				'vert_mesh_key': vert_mesh_key},
 			}
@@ -42,8 +42,8 @@ class SpiderSystem(GameSystem):
 	def update(self, dt):
 		entity = self.gameworld.entities[self.spider]
 		pos = entity.position
-		pos.x = self.x
-		pos.y = self.y
+		pos.x = win_x * self.x
+		pos.y = win_y * self.y
 
 		'''# char and background texture movement
 		if self.go_right:

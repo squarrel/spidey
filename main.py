@@ -38,7 +38,7 @@ class SpideyGame(Widget):
 	go_left = False
 	go_up = False
 	go_down = False
-	speed = 0.1
+	speed = .003
 	base = Base()
 
 	def __init__(self, **kwargs):
@@ -59,11 +59,11 @@ class SpideyGame(Widget):
 		self.set_state(state)
 
 		self.base.initiate_level()
-		print("Initiated level")
+		#print("Initiated level")
 		self.beetle_system.start()
-		print("Beetle system started")
+		#print("Beetle system started")
 		self.spider_system.start()
-		print("Spider system started")
+		#print("Spider system started")
 
 		#self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
