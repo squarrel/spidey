@@ -15,7 +15,7 @@ win_y = Window.size[1]
 	
 class BeetleSystem(GameSystem):
 
-	beetles_count = 1
+	beetles_count = 0
 	beetles = {}
 
 	def __init__(self, *args, **kwargs):
@@ -29,13 +29,13 @@ class BeetleSystem(GameSystem):
 		dir_from = choice(['N', 'S', 'W', 'E'])
 		
 		if dir_from == 'N':
-			x, y = randint(0, win_x), win_y + (win_y / 10)
+			x, y = randint(0, win_x), win_y + (win_y / 20)
 		elif dir_from == 'S':
-			x, y = randint(0, win_x), win_y - (win_y / 10)
+			x, y = randint(0, win_x), 0 - (win_y / 20)
 		elif dir_from == 'W':
-			x, y = win_x - (win_x / 10), randint(0, win_y)
+			x, y = 0 - (win_x / 20), randint(0, win_y)
 		elif dir_from == 'E':
-			x, y = win_x + (win_x / 10), randint(0, win_y)
+			x, y = win_x + (win_x / 20), randint(0, win_y)
 
 		ent_id = self.create_beetle(x, y)
 		self.beetles[self.beetles_count] = [dir_from, x, y]
@@ -60,6 +60,7 @@ class BeetleSystem(GameSystem):
 	def update(self, dt):
 		entities = self.gameworld.entities
 		for b in xrange(self.beetles_count):
+			#print('b', b)
 			pos = entities[b].position
 			dir_from = self.beetles[b][0]
 			if dir_from == 'N':
@@ -106,7 +107,5 @@ class BeetleSystem(GameSystem):
 		if self.ball_x <= .1:
 			self.speed_char3 = .004'''
 
-				
+
 Factory.register('BeetleSystem', cls=BeetleSystem)
-
-

@@ -22,12 +22,16 @@ from kivy.properties import StringProperty, NumericProperty, ListProperty
 from functools import partial
 from beetle_system import BeetleSystem
 from boxes import Boxes
+from base import Base
+from web import Web
 
+
+win_x = Window.size[0]
+win_y = Window.size[1]
+solve = solve.Solve()
 
 class SpideyGame(Widget):
 
-	char_x = NumericProperty(.1)
-	char_y = NumericProperty(.1)
 	char2_x = NumericProperty(.3)
 	char2_y = NumericProperty(.3)
 	ball_x = NumericProperty(.5)
@@ -39,6 +43,7 @@ class SpideyGame(Widget):
 	go_left = False
 	go_up = False
 	go_down = False
+	base = Base()
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -53,53 +58,41 @@ class SpideyGame(Widget):
 		self._keyboard.bind(on_key_down=self._on_keyboard_down)
 		self._keyboard.bind(on_key_up=self._on_keyboard_up)'''
 
-		# initiate levels (sort of), prepare boxes
-		for i in xrange(1, self.current_level + 1):
-			self.boxes[i] = False
-		print "boxes", self.boxes
-
-		# setup slices
-		for j in xrange(self.divisions):
-			self.slices.append((100 / self.divisions) * j / 100.0)
-			#print(j)
-		self.slices.append(1.0)
-		#print "divisions", self.divisions
-		print "slices", self.slices
-
-		solve.win_x = self.win_x
-		solve.win_y = self.win_y
-
 	def init_game(self):
 		state = 'main'
 		self.setup_states()
 		self.set_state(state)
+		
+		self.base.initiate_level()
+		print("Initiated level")
 		self.beetle_system.start()
+		print("Beetle system started")
 		#self.draw_stuff()
 		#Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
-			systems_added=['rotate_renderer'],
+			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
-			systems_unpaused=['rotate_renderer'],
+			systems_unpaused=['renderer'],
 			screenmanager_screen='menu')
 
 		self.gameworld.add_state(state_name='main',
-			systems_added=['rotate_renderer'],
+			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
-			systems_unpaused=['rotate_renderer'],
+			systems_unpaused=['renderer'],
 			screenmanager_screen='main')
 
 		self.gameworld.add_state(state_name='message',
-			systems_added=['rotate_renderer'],
+			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
-			systems_unpaused=['rotate_renderer'],
+			systems_unpaused=['renderer'],
 			screenmanager_screen='message')
 			
 		self.gameworld.add_state(state_name='settings',
-			systems_added=['rotate_renderer'],
+			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
-			systems_unpaused=['rotate_renderer'],
+			systems_unpaused=['renderer'],
 			screenmanager_screen='settings')
 
 	def set_state(self, *args):
@@ -156,34 +149,10 @@ class SpideyGame(Widget):
 		if super(SpideyGame, self).on_touch_down(touch):
 			return True
 		touch.grab(self)
-		#self.points = self.points + list([self.win_x * self.char_x, self.win_y * self.char_y]) 
-		self.draw_web()
-		print "touched"
+		#self.points = self.points + list([win_x * char_x, win_y * char_y]) 
+		self.web.draw_web()
+		#print "touched"
 		#return True
-
-	# add points to the map
-	def draw_web(self):
-		a = round(self.win_x * self.char_x, 2)
-		b = round(self.win_y * self.char_y, 2)
-		#print "a, b", a, b
-		self.points = self.points + list([a, b])
-		#print "self.points", self.points
-
-		# make calculations with points
-		self.solve.collect(self.points)
-
-		# draw them crosspoints, if there are new ones.
-		if self.prev_len != len(self.solve.crosspoints):
-			for i in xrange(1, len(self.solve.crosspoints) - self.prev_len):
-				print "len(crosspoints)", len(self.solve.crosspoints), "prev_len", self.prev_len
-				print self.solve.crosspoints[-i][0], self.solve.crosspoints[-i][1]
-				with self.canvas:
-					Color(1,0.9,0)
-					Ellipse(pos=(self.solve.crosspoints[-i][0], self.solve.crosspoints[-i][1]), size = (15, 15))
-					# change boxes colors accordingly
-					self.print_boxes(self.solve.crosspoints[-i][0], self.solve.crosspoints[-i][1])
-				self.prev_len = len(self.solve.crosspoints)
-				print "prev_len", self.prev_len
 
 class DebugPanel(Widget):
 	fps = StringProperty(None)

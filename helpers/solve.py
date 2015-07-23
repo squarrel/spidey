@@ -17,7 +17,7 @@ class Solve(object):
 	part_of = part_of.PartOf()
 
 	def collect(self, points):
-		#print len(points)
+		#print('len(points)', len(points))
 		if len(points) >= 8:
 
 			i = 0
@@ -121,4 +121,3 @@ class Solve(object):
 				self.memo.append([i, j])
 			else:
 				self.memo.append([i, j])
-

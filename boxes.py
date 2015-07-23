@@ -1,5 +1,6 @@
 from kivy.core.window import Window
 from kivy.factory import Factory
+from kivy.uix.widget import Widget
 
 
 win_x = Window.size[0]
