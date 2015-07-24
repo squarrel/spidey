@@ -47,6 +47,28 @@ SpideyGame:
 			system_id: 'web'
 			spider_system: spider_system
 			boxes: boxes
+			canvas:
+				Color:
+					rgba: .4, .4, 1, 1
+				Line:
+					points: self.points
+					joint: 'round'
+					cap: 'round'
+					width: 10
+					close: False
+				Color:
+					rgba: .8, .8, .8, 1
+				Line:
+					points: self.points
+					close: False
+				Color:
+					rgba: 1, .4, .4, .5
+				Line:
+					points: self.points2
+					joint: 'round'
+					cap: 'round'
+					width: 10
+					close: False				
 
 	GameScreenManager:
 		id: gamescreenmanager
