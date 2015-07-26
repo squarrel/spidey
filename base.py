@@ -23,7 +23,7 @@ class Base(object):
 		# initiate levels (sort of), prepare boxes
 		for i in xrange(1, self.current_level + 1):
 			self.boxes[i] = False
-		print "boxes", self.boxes
+		#print "boxes", self.boxes
 
 		# setup slices
 		for j in xrange(self.divisions):
@@ -31,4 +31,4 @@ class Base(object):
 			#print(j)
 		self.slices.append(1.0)
 		#print "divisions", self.divisions
-		print "slices", self.slices
+		#print "slices", self.slices

@@ -24,13 +24,28 @@ class Boxes(Widget):
 				#print win_y * self.slices[i-1], win_y * self.slices[i], y
 				if win_x * base.slices[j-1] < x <= win_x * base.slices[j] \
 				and win_y * base.slices[i-1] < y < win_y * base.slices[i] \
-				and base.boxes[k] == False:
+				and base.boxes[k] == False: # could be imporoved here for speed
 					#print "Box", i, j
 					base.boxes[k] = True
 					with self.canvas.after:
 						color = Color(.7, .7, .7, .3)
 						Rectangle(size=(win_x * base.slices[1], win_y * base.slices[1]),
 							pos=(win_x * base.slices[j-1], win_y * base.slices[i-1]))
+				j += 1
+				k += 1
+
+			j = 1
+			i += 1
+			
+	def current_box(self, x, y):
+		i = 1
+		j = 1
+		k = 1
+		while i <= len(base.slices) - 1:
+			while j <= len(base.slices) - 1:
+				if win_x * base.slices[j-1] < x <= win_x * base.slices[j] \
+				and win_y * base.slices[i-1] < y < win_y * base.slices[i]:
+					return k
 				j += 1
 				k += 1
 

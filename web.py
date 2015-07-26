@@ -14,8 +14,8 @@ solve = solve.Solve()
 
 class Web(Widget):
 
-	points = ListProperty([500, 500])
-	points2 = ListProperty([400, 400])
+	points = ListProperty([win_x * .5, win_y * .5])
+	points2 = ListProperty([win_x * 4, win_y * .4])
 	prev_len = 0
 
 	def draw_web(self):

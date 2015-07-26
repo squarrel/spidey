@@ -5,6 +5,8 @@ from kivent_core.managers.resource_managers import (
 from kivy.factory import Factory
 from kivy.clock import Clock
 from random import randint, choice
+from kivy.properties import StringProperty
+from boxes import Boxes
 
 texture_manager.load_atlas('assets/background_objects.atlas')
 model_manager.load_textured_rectangle(4, 7., 7., 'star1', 'star1-4')
@@ -15,37 +17,35 @@ win_y = Window.size[1]
 
 class BeetleSystem(GameSystem):
 
-	beetles_count = 0
+	system_id = StringProperty('beetle_system')
 	beetles = {}
 
 	def __init__(self, *args, **kwargs):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
 
 	def start(self):
-		self.draw_stuff()
+		#Clock.schedule_interval(self.draw_stuff, 120.0 / 60.0)
+		Clock.schedule_once(self.draw_stuff)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
-	def draw_stuff(self):
-		dir_from = choice(['N', 'S', 'W', 'E'])
+	def draw_stuff(self, dt):
+		dir_to = choice(['N', 'S', 'W', 'E'])
 
-		if dir_from == 'N':
-			x, y = randint(0, win_x), win_y + (win_y / 20)
-		elif dir_from == 'S':
-			x, y = randint(0, win_x), 0 - (win_y / 20)
-		elif dir_from == 'W':
-			x, y = 0 - (win_x / 20), randint(0, win_y)
-		elif dir_from == 'E':
-			x, y = win_x + (win_x / 20), randint(0, win_y)
+		if dir_to == 'N':
+			x, y = randint(0, win_x), 0
+		elif dir_to == 'S':
+			x, y = randint(0, win_x), win_y
+		elif dir_to == 'W':
+			x, y = win_x, randint(0, win_y)
+		elif dir_to == 'E':
+			x, y = 0, randint(0, win_y)
 
 		ent_id = self.create_beetle(x, y)
-		self.beetles[self.beetles_count] = [dir_from, x, y]
-		self.beetles_count += 1
+		self.beetles[ent_id] = dir_to
 		#print(self.beetles)
-		#print(self.beetles_count)
 
-	def destroy_created_entity(self, ent_id, dt):
+	def remove_beetle(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
-		#self.app.count -= 1
 
 	def create_beetle(self, x, y):
 		vert_mesh_key = choice(['star1-4', 'star1-4-2'])
@@ -53,43 +53,35 @@ class BeetleSystem(GameSystem):
 			'position': (x, y),
 			'renderer': {'texture': 'star1',
 				'vert_mesh_key': vert_mesh_key},
+			'beetle_system': {},
 			}
 		return self.gameworld.init_entity(create_dict, ['position',
-			'renderer'])
+			'renderer', 'beetle_system'])
 
 	def update(self, dt):
 		entities = self.gameworld.entities
-		for b in xrange(self.beetles_count):
-			#print('b', b)
-			pos = entities[b].position
-			dir_from = self.beetles[b][0]
-			if dir_from == 'N':
-				pos.y -= .15
-			elif dir_from == 'S':
-				pos.y += .15
-			elif dir_from == 'W':
-				pos.x += .15
-			elif dir_from == 'E':
-				pos.x -= .15
+		
+		for component in self.components:
+			if component is not None:
+				entity_id = component.entity_id
+				pos = entities[entity_id].position
+				dir_to = self.beetles[entity_id]
+				
+				current_box = self.boxes.current_box(pos.x, pos.y)
+				print current_box
+				
+				#print pos.x, dir_to
+				if dir_to == 'N':
+					pos.y += .15
+				elif dir_to == 'S':
+					pos.y -= .15
+				elif dir_to == 'W':
+					pos.x -= .15
+				elif dir_to == 'E':
+					pos.x += .15
 
-		'''
-		# collisions
-		self.character_1.hit(self.ball)
-		self.character_2.hit(self.character_1)
-
-		# ai movement of char 2. not very smart
-		self.char2_x += self.speed_char2
-		if self.char2_x >= .6:
-			self.speed_char2 = -.001
-		if self.char2_x <= .2:
-			self.speed_char2 = .001
-
-		# ai movement of ball
-		self.ball_x += self.speed_char3
-		if self.ball_x >= .9:
-			self.speed_char3 = -.004
-		if self.ball_x <= .1:
-			self.speed_char3 = .004'''
+				if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
+					self.remove_beetle(entity_id)
 
 
 Factory.register('BeetleSystem', cls=BeetleSystem)
