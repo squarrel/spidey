@@ -7,6 +7,7 @@ from kivy.clock import Clock
 from random import randint, choice
 from kivy.properties import StringProperty
 from boxes import Boxes
+from base import Base
 
 texture_manager.load_atlas('assets/background_objects.atlas')
 model_manager.load_textured_rectangle(4, 7., 7., 'star1', 'star1-4')
@@ -14,6 +15,7 @@ model_manager.load_textured_rectangle(4, 10., 10., 'star1', 'star1-4-2')
 
 win_x = Window.size[0]
 win_y = Window.size[1]
+base = base.Base()
 
 class BeetleSystem(GameSystem):
 
@@ -60,25 +62,41 @@ class BeetleSystem(GameSystem):
 
 	def update(self, dt):
 		entities = self.gameworld.entities
-		
+
 		for component in self.components:
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
 				dir_to = self.beetles[entity_id]
-				
+
 				current_box = self.boxes.current_box(pos.x, pos.y)
-				print current_box
-				
+				#print current_box
+
 				#print pos.x, dir_to
 				if dir_to == 'N':
-					pos.y += .15
+					next_box = current_box + base.divisions
+					if base.boxes[next_box] == False:
+						self.beetles[entity_id] = choice(['W', 'E'])
+						continue
+						pos.y += .15
 				elif dir_to == 'S':
-					pos.y -= .15
+					next_box = current_box - base.divisions
+					if base.boxes[next_box] == False:
+						self.beetles[entity_id] = choice(['W', 'E'])
+						continue
+						pos.y -= .15
 				elif dir_to == 'W':
-					pos.x -= .15
+					next_box = current_box - 1
+					if base.boxes[next_box] == False:
+						self.beetles[entity_id] = choice(['N', 'S'])
+						continue
+						pos.x -= .15
 				elif dir_to == 'E':
-					pos.x += .15
+					next_box = current_box + 1
+					if base.boxes[next_box] == False:
+						self.beetles[entity_id] = choice(['N', 'S'])
+						continue
+						pos.x += .15
 
 				if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
 					self.remove_beetle(entity_id)
