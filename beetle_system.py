@@ -26,7 +26,7 @@ class BeetleSystem(GameSystem):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
 
 	def start(self):
-		Clock.schedule_interval(self.draw_stuff, 120.0 / 60.0)
+		Clock.schedule_interval(self.draw_stuff, 1.0 / 4.0)
 		#Clock.schedule_once(self.draw_stuff)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -40,7 +40,7 @@ class BeetleSystem(GameSystem):
 		elif dir_to == 'W':
 			x, y = win_x, randint(0, win_y)
 		elif dir_to == 'E':
-			x, y = 0, randint(0, win_y)
+			x, y = 0, randint(0, win_y )
 
 		ent_id = self.create_beetle(x, y)
 		self.beetles[ent_id] = dir_to
@@ -69,39 +69,40 @@ class BeetleSystem(GameSystem):
 				pos = entities[entity_id].position
 				dir_to = self.beetles[entity_id]
 				current_box = self.boxes.current_box(pos.x, pos.y)
+				#print("current_box", current_box)
 
 				if dir_to == 'N':
 					next_box = current_box + base.divisions
-					print dir_to, current_box, next_box, base.boxes[next_box]
+					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['W', 'E'])
 							continue
-					pos.y += .15
+					pos.y += .55
 				elif dir_to == 'S':
 					next_box = current_box - base.divisions
-					print dir_to, current_box, next_box, base.boxes[next_box]
+					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['W', 'E'])
 							continue
-					pos.y -= .15
+					pos.y -= .55
 				elif dir_to == 'W':
 					next_box = current_box - 1
-					print dir_to, current_box, next_box, base.boxes[next_box]
+					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['N', 'S'])
 							continue
-					pos.x -= .15
+					pos.x -= .55
 				elif dir_to == 'E':
 					next_box = current_box + 1
-					print dir_to, current_box, next_box, base.boxes[next_box]
+					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['N', 'S'])
 							continue
-					pos.x += .15
+					pos.x += .55
 
 				if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
 					self.remove_beetle(entity_id)

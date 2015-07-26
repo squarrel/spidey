@@ -11,7 +11,7 @@ LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
-	current_level = LEVELS[0]
+	current_level = LEVELS[4]
 	boxes = {}
 	slices = []
 	intersections = {}
