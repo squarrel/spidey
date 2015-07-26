@@ -43,8 +43,8 @@ class Boxes(Widget):
 		k = 1
 		while i <= len(base.slices) - 1:
 			while j <= len(base.slices) - 1:
-				if win_x * base.slices[j-1] < x <= win_x * base.slices[j] \
-				and win_y * base.slices[i-1] < y < win_y * base.slices[i]:
+				if win_x * base.slices[j-1] <= x <= win_x * base.slices[j] \
+				and win_y * base.slices[i-1] <= y <= win_y * base.slices[i]:
 					return k
 				j += 1
 				k += 1
