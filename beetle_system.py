@@ -26,7 +26,7 @@ class BeetleSystem(GameSystem):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
 
 	def start(self):
-		Clock.schedule_interval(self.draw_stuff, 1.0 / 4.0)
+		Clock.schedule_interval(self.draw_stuff, 1.0 / 7.0)
 		#Clock.schedule_once(self.draw_stuff)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -78,7 +78,7 @@ class BeetleSystem(GameSystem):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['W', 'E'])
 							continue
-					pos.y += .55
+					pos.y += .95
 				elif dir_to == 'S':
 					next_box = current_box - base.divisions
 					#print dir_to, current_box, next_box
@@ -86,7 +86,7 @@ class BeetleSystem(GameSystem):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['W', 'E'])
 							continue
-					pos.y -= .55
+					pos.y -= .95
 				elif dir_to == 'W':
 					next_box = current_box - 1
 					#print dir_to, current_box, next_box
@@ -94,7 +94,7 @@ class BeetleSystem(GameSystem):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['N', 'S'])
 							continue
-					pos.x -= .55
+					pos.x -= .95
 				elif dir_to == 'E':
 					next_box = current_box + 1
 					#print dir_to, current_box, next_box
@@ -102,7 +102,7 @@ class BeetleSystem(GameSystem):
 						if base.boxes[next_box]:
 							self.beetles[entity_id] = choice(['N', 'S'])
 							continue
-					pos.x += .55
+					pos.x += .95
 
 				if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
 					self.remove_beetle(entity_id)

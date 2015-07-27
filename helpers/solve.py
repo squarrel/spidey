@@ -120,7 +120,7 @@ class Solve(object):
 			
 			if self.part_of.part_of(x1, x2, y1, y2, a1, a2, b1, b2, x, y):
 				self.crosspoints.append([x, y])
-				print('crosspoints', self.crosspoints)
+				#print('crosspoints', self.crosspoints)
 				self.memo.append([i, j])
 			else:
 				self.memo.append([i, j])

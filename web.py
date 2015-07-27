@@ -31,7 +31,7 @@ class Web(Widget):
 
 		# draw them crosspoints, if there are new ones.
 		if self.prev_len != len(solve.crosspoints):
-			print('draw')
+			#print('draw')
 			for i in xrange(1, len(solve.crosspoints) - self.prev_len):
 				#print "len(crosspoints)", len(solve.crosspoints), "prev_len", self.prev_len
 				#print solve.crosspoints[-i][0], solve.crosspoints[-i][1]
@@ -41,4 +41,4 @@ class Web(Widget):
 					# change boxes colors accordingly
 					self.boxes.print_boxes(solve.crosspoints[-i][0], solve.crosspoints[-i][1])
 				self.prev_len = len(solve.crosspoints)
-				print "prev_len", self.prev_len
+				#print "prev_len", self.prev_len
