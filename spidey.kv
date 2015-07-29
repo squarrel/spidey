@@ -111,6 +111,9 @@ SpideyGame:
 			text: 'The Main'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .55}
+		DebugPanel:
+			size_hint: (.2, .1)
+			pos_hint: {'x': .225, 'y': .025}
 				
 <MessageScreen@GameScreen>:
 	name: 'message'
@@ -125,6 +128,9 @@ SpideyGame:
 			text: 'The settings'
 			
 <DebugPanel>:
+	base: base
+	Label:
+		text: root.score
 	Label:
 		pos: root.pos
 		size: root.size

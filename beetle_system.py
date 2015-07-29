@@ -26,7 +26,7 @@ class BeetleSystem(GameSystem):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
 
 	def start(self):
-		Clock.schedule_interval(self.draw_stuff, 1.0 / 7.0)
+		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
 		#Clock.schedule_once(self.draw_stuff)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -43,7 +43,7 @@ class BeetleSystem(GameSystem):
 			x, y = 0, randint(0, win_y )
 
 		ent_id = self.create_beetle(x, y)
-		self.beetles[ent_id] = dir_to
+		self.beetles[ent_id] = [dir_to, 3]
 		#print(self.beetles)
 
 	def remove_beetle(self, ent_id):
@@ -67,41 +67,70 @@ class BeetleSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				dir_to = self.beetles[entity_id]
 				current_box = self.boxes.current_box(pos.x, pos.y)
+				div = base.divisions
+				remove_beetle = self.remove_beetle
 				#print("current_box", current_box)
 
-				if dir_to == 'N':
+				if self.beetles[entity_id][0] == 'N':
 					next_box = current_box + base.divisions
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							self.beetles[entity_id] = choice(['W', 'E'])
-							continue
+							if pos.y > (((next_box - 1) / div) * (win_y / div)) - 15:
+								self.beetles[entity_id][0] = choice(['W', 'E'])
+								self.beetles[entity_id][1] -= 1
+								if self.beetles[entity_id][1] == 0:
+									self.remove_beetle(entity_id)
+									base.score += 1
+									break
+								else:
+									continue
 					pos.y += .95
-				elif dir_to == 'S':
+				elif self.beetles[entity_id][0] == 'S':
 					next_box = current_box - base.divisions
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							self.beetles[entity_id] = choice(['W', 'E'])
-							continue
+							if pos.y < (((next_box - 1) / div) * (win_y / div)) + win_y / div + 15:
+								self.beetles[entity_id][0] = choice(['W', 'E'])
+								self.beetles[entity_id][1] -= 1
+								if self.beetles[entity_id][1] == 0:
+									self.remove_beetle(entity_id)
+									base.score += 1
+									break
+								else:
+									continue
 					pos.y -= .95
-				elif dir_to == 'W':
+				elif self.beetles[entity_id][0] == 'W':
 					next_box = current_box - 1
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							self.beetles[entity_id] = choice(['N', 'S'])
-							continue
+							if pos.x < (((next_box - 1) % div) * (win_x / div)) + win_x / div + 15:
+								self.beetles[entity_id][0] = choice(['N', 'S'])
+								self.beetles[entity_id][1] -= 1
+								if self.beetles[entity_id][1] == 0:
+									self.remove_beetle(entity_id)
+									base.score += 1
+									break
+								else:
+									continue
 					pos.x -= .95
-				elif dir_to == 'E':
+				elif self.beetles[entity_id][0] == 'E':
 					next_box = current_box + 1
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							self.beetles[entity_id] = choice(['N', 'S'])
-							continue
+							if pos.x > (((next_box - 1) % div) * (win_x / div)) - 15:
+								self.beetles[entity_id][0] = choice(['N', 'S'])
+								self.beetles[entity_id][1] -= 1
+								if self.beetles[entity_id][1] == 0:
+									self.remove_beetle(entity_id)
+									base.score += 1
+									break
+								else:
+									continue
 					pos.x += .95
 
 				if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:

@@ -31,6 +31,7 @@ from web import Web
 
 win_x = Window.size[0]
 win_y = Window.size[1]
+base = Base()
 
 class SpideyGame(Widget):
 
@@ -39,7 +40,6 @@ class SpideyGame(Widget):
 	go_up = False
 	go_down = False
 	speed = .003
-	base = Base()
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -58,7 +58,7 @@ class SpideyGame(Widget):
 		self.setup_states()
 		self.set_state(state)
 
-		self.base.initiate_level()
+		base.initiate_level()
 		#print("Initiated level")
 		self.beetle_system.start()
 		#print("Beetle system started")

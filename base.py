@@ -11,11 +11,12 @@ LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
-	current_level = LEVELS[4]
+	current_level = LEVELS[0]
 	boxes = {}
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
+	score = 0
 
 	def initiate_level(self):
 		# initiate levels (sort of), prepare boxes
