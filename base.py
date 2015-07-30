@@ -16,7 +16,9 @@ class Base(object):
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
-	score = 0
+
+	def __init__(self, **kwargs):
+		super(Base, self).__init__(**kwargs)
 
 	def initiate_level(self):
 		# initiate levels (sort of), prepare boxes

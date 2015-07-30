@@ -27,6 +27,7 @@ from beetle_system import BeetleSystem
 from boxes import Boxes
 from base import Base
 from web import Web
+from panel import Panel
 
 
 win_x = Window.size[0]
@@ -169,11 +170,11 @@ class SpideyGame(Widget):
 		#print "touched"
 		#return True
 
-class DebugPanel(Widget):
+class StatusPanel(Widget):
 	fps = StringProperty(None)
 
 	def __init__(self, **kwargs):
-		super(DebugPanel, self).__init__(**kwargs)
+		super(StatusPanel, self).__init__(**kwargs)
 		Clock.schedule_once(self.update_fps, .05)
 
 	def update_fps(self, dt):
@@ -181,7 +182,7 @@ class DebugPanel(Widget):
 		Clock.schedule_once(self.update_fps, .05)
 
 class SpideyApp(App):
-	count = NumericProperty(0)
+	pass
 
 if __name__ == '__main__':
 	SpideyApp().run()

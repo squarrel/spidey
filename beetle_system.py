@@ -5,9 +5,10 @@ from kivent_core.managers.resource_managers import (
 from kivy.factory import Factory
 from kivy.clock import Clock
 from random import randint, choice
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, NumericProperty
 from boxes import Boxes
 from base import Base
+from panel import Panel
 
 texture_manager.load_atlas('assets/background_objects.atlas')
 model_manager.load_textured_rectangle(4, 7., 7., 'star1', 'star1-4')
@@ -21,6 +22,8 @@ class BeetleSystem(GameSystem):
 
 	system_id = StringProperty('beetle_system')
 	beetles = {}
+	score = 0
+	score_ = StringProperty(str(score))
 
 	def __init__(self, *args, **kwargs):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
@@ -82,7 +85,8 @@ class BeetleSystem(GameSystem):
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
 									self.remove_beetle(entity_id)
-									base.score += 1
+									self.score += 1
+									self.score_ = str(self.score)
 									break
 								else:
 									continue
@@ -97,7 +101,8 @@ class BeetleSystem(GameSystem):
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
 									self.remove_beetle(entity_id)
-									base.score += 1
+									self.score += 1
+									self.score_ = str(self.score)
 									break
 								else:
 									continue
@@ -112,7 +117,8 @@ class BeetleSystem(GameSystem):
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
 									self.remove_beetle(entity_id)
-									base.score += 1
+									self.score += 1
+									self.score_ = str(self.score)
 									break
 								else:
 									continue
@@ -127,7 +133,8 @@ class BeetleSystem(GameSystem):
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
 									self.remove_beetle(entity_id)
-									base.score += 1
+									self.score += 1
+									self.score_ = str(self.score)
 									break
 								else:
 									continue

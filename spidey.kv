@@ -8,7 +8,8 @@ SpideyGame:
 	beetle_system: beetle_system
 	boxes: boxes
 	web: web
-	
+	panel: panel
+
 	GameWorld:
 		id: gameworld
 		gamescreenmanager: gamescreenmanager
@@ -39,7 +40,6 @@ SpideyGame:
 			boxes: boxes
 			gameworld: gameworld
 			updateable: True
-			#update_time: 0.1
 		Boxes:
 			id: boxes
 			system_id: 'boxes'
@@ -69,7 +69,16 @@ SpideyGame:
 					joint: 'round'
 					cap: 'round'
 					width: 10
-					close: False				
+					close: False
+		Panel:
+			id: panel
+			system_id: 'panel'
+			Label:
+				pos: root.pos[0] * .07, root.pos[1] * .07
+				size: root.size[0] * .07, root.size[1] * .07
+				font_size: root.size[1] * .07
+				color: (1, 1, 1, 1)
+				text: beetle_system.score_		
 
 	GameScreenManager:
 		id: gamescreenmanager
@@ -86,7 +95,7 @@ SpideyGame:
 		id: message_screen
 	SettingsScreen:
 		id: settings_screen
-		
+
 <MenuScreen@GameScreen>:
 	name: 'menu'
 	FloatLayout:
@@ -100,37 +109,28 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': 45}
 			on_press: root.manager.current = 'main'
-		DebugPanel:
-			size_hint: (.2, .1)
-			pos_hint: {'x': .225, 'y': .025}
-			
+
 <MainScreen@GameScreen>:
 	name: 'main'
 	FloatLayout:
 		Label:
-			text: 'The Main'
+			text: 'Main'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .55}
-		DebugPanel:
-			size_hint: (.2, .1)
-			pos_hint: {'x': .225, 'y': .025}
-				
+
 <MessageScreen@GameScreen>:
 	name: 'message'
 	FloatLayout:
 		Label:
 			text: 'The Message'
-				
+
 <SettingsScreen@GameScreen>:
 	name: 'settings'
 	FloatLayout:
 		Label:
 			text: 'The settings'
-			
-<DebugPanel>:
-	base: base
-	Label:
-		text: root.score
+
+<StatusPanel>:
 	Label:
 		pos: root.pos
 		size: root.size
@@ -139,3 +139,5 @@ SpideyGame:
 		valign: 'middle'
 		color: (1, 1, 1, 1)
 		text: 'FPS: ' + root.fps if root.fps != None else 'FPS:'
+
+
