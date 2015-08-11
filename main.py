@@ -1,4 +1,5 @@
 # Spidey Scientist
+
 from kivy.app import App
 print('imported kivy')
 from kivy.uix.widget import Widget
@@ -55,18 +56,16 @@ class SpideyGame(Widget):
 		self._keyboard.bind(on_key_up=self._on_keyboard_up)
 
 	def init_game(self):
-		state = 'main'
+		state = 'menu'
 		self.setup_states()
 		self.set_state(state)
 
 		base.initiate_level()
-		#print("Initiated level")
-		self.beetle_system.start()
+		print("Initiated level")
+		#self.beetle_system.start()
 		#print("Beetle system started")
-		self.spider_system.start()
+		#self.spider_system.start()
 		#print("Spider system started")
-
-		#self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def update(self, dt):
@@ -86,6 +85,11 @@ class SpideyGame(Widget):
 			self.spider_system.y -= self.speed
 			#self.ani = 'pas_ani.zip'	
 		#else: self.ani = 'data/pauk.jpg'	
+
+		#print(self.gameworld.state)
+		if self.gameworld.state == 'main':
+			print("it's main!")
+			Clock.schedule_once(self.start, 2.0)
 
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
@@ -114,6 +118,14 @@ class SpideyGame(Widget):
 
 	def set_state(self, *args):
 		self.gameworld.state = args[0]
+
+	def start_game(self, *args):
+		self.current = 'main'
+		print("self.current:", self.current)
+		self.beetle_system.start()
+		print("Beetle system started")
+		self.spider_system.start()
+		print("Spider system started")
 
 	# Keyboard rules
 	def _keyboard_closed(self):

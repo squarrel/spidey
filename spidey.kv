@@ -73,12 +73,13 @@ SpideyGame:
 		Panel:
 			id: panel
 			system_id: 'panel'
+			gamescreenmanager: gamescreenmanager
 			Label:
 				pos: root.pos[0] * .07, root.pos[1] * .07
 				size: root.size[0] * .07, root.size[1] * .07
-				font_size: root.size[1] * .07
+				font_size: root.size[1] * .03
 				color: (1, 1, 1, 1)
-				text: beetle_system.score_		
+				text: 'Score: ' + beetle_system.score_	if gamescreenmanager.current == 'main' else ''
 
 	GameScreenManager:
 		id: gamescreenmanager
@@ -107,8 +108,8 @@ SpideyGame:
 		Button:
 			text: 'Settings'
 			size_hint: (.2, .1)
-			pos_hint: {'x': .45, 'y': 45}
-			on_press: root.manager.current = 'main'
+			pos_hint: {'x': .45, 'y': 35}
+			on_press: root.manager.current = 'settings'
 
 <MainScreen@GameScreen>:
 	name: 'main'
@@ -116,7 +117,7 @@ SpideyGame:
 		Label:
 			text: 'Main'
 			size_hint: (.2, .1)
-			pos_hint: {'x': .45, 'y': .55}
+			pos_hint: {'x': .45, 'y': .9}
 
 <MessageScreen@GameScreen>:
 	name: 'message'
@@ -128,7 +129,9 @@ SpideyGame:
 	name: 'settings'
 	FloatLayout:
 		Label:
-			text: 'The settings'
+			text: 'Settings'
+			size_hint: (.2, .1)
+			pos_hint: {'x': .45, 'y': .9}
 
 <StatusPanel>:
 	Label:
@@ -139,5 +142,3 @@ SpideyGame:
 		valign: 'middle'
 		color: (1, 1, 1, 1)
 		text: 'FPS: ' + root.fps if root.fps != None else 'FPS:'
-
-

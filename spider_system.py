@@ -42,11 +42,20 @@ class SpiderSystem(GameSystem):
 			'renderer', 'spider_system'])
 
 	def update(self, dt):
-		entity = self.gameworld.entities[self.spider]
+		entities = self.gameworld.entities
+		for component in self.components:
+			if component is not None:
+				entity_id = component.entity_id
+				pos = entities[entity_id].position
+				if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
+					pos.x = win_x * self.x
+					pos.y = win_y * self.y
+		
+		'''entity = self.gameworld.entities[self.spider]
 		pos = entity.position
 		if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
 			pos.x = win_x * self.x
-			pos.y = win_y * self.y
+			pos.y = win_y * self.y'''
 
 
 Factory.register('SpiderSystem', cls=SpiderSystem)
