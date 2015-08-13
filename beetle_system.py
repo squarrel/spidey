@@ -32,6 +32,13 @@ class BeetleSystem(GameSystem):
 		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
 		#Clock.schedule_once(self.draw_stuff)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
+		
+	def stop(self):
+		entities = self.gameworld.entities
+		for component in self.components:
+			if component is not None:
+				entity_id = component.entity_id
+				self.remove_beetle(entity_id)
 
 	def draw_stuff(self, dt):
 		dir_to = choice(['N', 'S', 'W', 'E'])

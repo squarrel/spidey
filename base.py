@@ -16,7 +16,7 @@ class Base(object):
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
-	main = False
+	switch = None
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)

@@ -56,6 +56,8 @@ class SpideyGame(Widget):
 		self._keyboard.bind(on_key_down=self._on_keyboard_down)
 		self._keyboard.bind(on_key_up=self._on_keyboard_up)
 
+		self.screens = self.gameworld.gamescreenmanager
+
 	def init_game(self):
 		state = 'menu'
 		self.setup_states()
@@ -69,8 +71,13 @@ class SpideyGame(Widget):
 		#print("Spider system started")
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
+	# the update function; runs always
 	def update(self, dt):
-		if self.gameworld.gamescreenmanager.current == 'main':
+		# depending on wich screen is active, perform specific updates
+		if self.screens.current == 'menu':
+			pass
+
+		elif self.screens.current == 'main':
 			# char and background texture movement
 			if self.go_right:
 				self.spider_system.x += self.speed
@@ -87,11 +94,23 @@ class SpideyGame(Widget):
 				self.spider_system.y -= self.speed
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'	
-			if base.main == True:
+			
+			if base.switch == 'main':
 				#print("start the game, man!")
 				self.start_game()
-				base.main = False
+				base.switch = None
+			elif base.switch == 'menu':
+				self.stop_game()
+				base.switch = None
+				print(base.switch)
 
+		elif self.screens.current == 'message':
+			pass
+
+		elif self.screens.curren == 'settings':
+			pass
+
+	# setup the states to be used in the game
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
 			systems_added=['renderer'],
@@ -117,14 +136,23 @@ class SpideyGame(Widget):
 			systems_unpaused=['renderer'],
 			screenmanager_screen='settings')
 
+	# change state
 	def set_state(self, *args):
 		self.gameworld.state = args[0]
 
+	# start main game
 	def start_game(self, *args):
 		self.beetle_system.start()
 		print("Beetle system started")
 		self.spider_system.start()
 		print("Spider system started")
+		
+	# stop main game
+	def stop_game(self, *args):
+		self.beetle_system.stop()
+		print("Beetle system stopped")
+		self.spider_system.stop()
+		print("Spider system stopped")
 
 	# keyboard rules
 	def _keyboard_closed(self):
@@ -135,8 +163,7 @@ class SpideyGame(Widget):
 
 	# capture the keyboard-down input and assign commands
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-		screenmanager = self.gameworld.gamescreenmanager
-		#print keycode
+		# for assign each key its action
 		if keycode[1] == 'right':
 			self.go_right = True
 		elif keycode[1] == 'left':
@@ -145,19 +172,21 @@ class SpideyGame(Widget):
 			self.go_up = True
 		elif keycode[1] == 'down':
 			self.go_down = True
+			
 		elif keycode[1] == 'spacebar':
 			self.web.draw_web()
+			
 		elif keycode[1] == 'enter':
-			if screenmanager.current == 'menu':
-				screenmanager.current = 'main'
+			if self.screens.current == 'menu':
+				self.screens.current = 'main'
 		elif keycode[1] == 'backspace':
-			if screenmanager.current == 'main':
-				screenmanager.current = 'menu'
+			if self.screens.current == 'main':
+				self.screens.current = 'menu'
 		elif keycode[1] == 'escape':
-			if screenmanager.current == 'menu':
+			if self.screens.current == 'menu':
 				exit()
-			elif screenmanager.current == 'main':
-				screenmanager.current = 'menu'
+			elif self.screens.current == 'main':
+				self.screens.current = 'menu'
 		return True
 
 	# capture the keyboard-up input and assign commands
@@ -194,11 +223,12 @@ class StatusPanel(Widget):
 		Clock.schedule_once(self.update_fps, .05)
 
 class MenuScreen(Screen):
-	def start(self):
-		base.main = True
+	def start_game(self):
+		base.switch = 'main'
 
 class MainScreen(Screen):
-	pass
+	def stop_game(self):
+		base.switch = 'menu'
 
 class MessageScreen(Screen):
 	pass

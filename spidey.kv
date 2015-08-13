@@ -104,7 +104,7 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .55}
 			on_press: root.manager.current = 'main'
-			on_release: root.start()
+			on_release: root.start_game()
 		Button:
 			text: 'Settings'
 			size_hint: (.2, .1)
@@ -115,15 +115,24 @@ SpideyGame:
 	name: 'main'
 	FloatLayout:
 		Label:
-			text: 'Main'
+			text: 'Spidey Scientist'
 			size_hint: (.2, .1)
-			pos_hint: {'x': .45, 'y': .9}
+			pos_hint: {'x': .4, 'y': .9}
+		Button:
+			text: 'Pause'
+			size_hint: (.2, .1)
+			pos_hint: {'x': .8, 'y': .9}
+			on_press: root.stop_game()
+			on_release: root.manager.current = 'menu'
 
 <MessageScreen@GameScreen>:
 	name: 'message'
 	FloatLayout:
 		Label:
 			text: 'The Message'
+		Button:
+			text: 'Back'
+			on_press: 
 
 <SettingsScreen@GameScreen>:
 	name: 'settings'

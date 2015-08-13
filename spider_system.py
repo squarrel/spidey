@@ -20,14 +20,18 @@ class SpiderSystem(GameSystem):
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
 
+	# start spider system
 	def start(self):
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
+		
+	def stop(self):
+		self.destroy_created_entity(self.spider)
 
 	def draw_stuff(self):
 		ent_id = self.create_spider(self.x, self.y)
 
-	def destroy_created_entity(self, ent_id, dt):
+	def destroy_created_entity(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
 	def create_spider(self, x, y):
