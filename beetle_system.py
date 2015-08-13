@@ -73,6 +73,8 @@ class BeetleSystem(GameSystem):
 				current_box = self.boxes.current_box(pos.x, pos.y)
 				div = base.divisions
 				remove_beetle = self.remove_beetle
+				dist_x = win_x / 20
+				dist_y = win_y / 20
 				#print("current_box", current_box)
 
 				if self.beetles[entity_id][0] == 'N':
@@ -80,7 +82,7 @@ class BeetleSystem(GameSystem):
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							if pos.y > (((next_box - 1) / div) * (win_y / div)) - 15:
+							if pos.y > (((next_box - 1) / div) * (win_y / div)) - dist_y:
 								self.beetles[entity_id][0] = choice(['W', 'E'])
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
@@ -96,7 +98,7 @@ class BeetleSystem(GameSystem):
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							if pos.y < (((next_box - 1) / div) * (win_y / div)) + win_y / div + 15:
+							if pos.y < (((next_box - 1) / div) * (win_y / div)) + win_y / div + dist_y:
 								self.beetles[entity_id][0] = choice(['W', 'E'])
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
@@ -112,7 +114,7 @@ class BeetleSystem(GameSystem):
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							if pos.x < (((next_box - 1) % div) * (win_x / div)) + win_x / div + 15:
+							if pos.x < (((next_box - 1) % div) * (win_x / div)) + win_x / div + dist_x:
 								self.beetles[entity_id][0] = choice(['N', 'S'])
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:
@@ -128,7 +130,7 @@ class BeetleSystem(GameSystem):
 					#print dir_to, current_box, next_box
 					if next_box in xrange(1, base.current_level):
 						if base.boxes[next_box]:
-							if pos.x > (((next_box - 1) % div) * (win_x / div)) - 15:
+							if pos.x > (((next_box - 1) % div) * (win_x / div)) - dist_x:
 								self.beetles[entity_id][0] = choice(['N', 'S'])
 								self.beetles[entity_id][1] -= 1
 								if self.beetles[entity_id][1] == 0:

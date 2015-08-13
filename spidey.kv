@@ -73,7 +73,6 @@ SpideyGame:
 		Panel:
 			id: panel
 			system_id: 'panel'
-			gamescreenmanager: gamescreenmanager
 			Label:
 				pos: root.pos[0] * .07, root.pos[1] * .07
 				size: root.size[0] * .07, root.size[1] * .07
@@ -105,6 +104,7 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .55}
 			on_press: root.manager.current = 'main'
+			on_release: root.start()
 		Button:
 			text: 'Settings'
 			size_hint: (.2, .1)

@@ -11,11 +11,12 @@ LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
-	current_level = LEVELS[4]
+	current_level = LEVELS[2]
 	boxes = {}
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
+	main = False
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)

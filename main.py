@@ -6,6 +6,7 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty, ListProperty
+from kivy.uix.screenmanager import Screen
 
 from random import randint, choice
 import math
@@ -48,10 +49,10 @@ class SpideyGame(Widget):
 		self.gameworld.init_gameworld(['renderer', 'position'],
 			callback=self.init_game)
 
-		# Keyboard
+		# keyboard
 		self._keyboard = Window.request_keyboard(self._keyboard_closed, self, 'text')
 		if self._keyboard.widget:
-			pass # what is this?
+			pass
 		self._keyboard.bind(on_key_down=self._on_keyboard_down)
 		self._keyboard.bind(on_key_up=self._on_keyboard_up)
 
@@ -69,27 +70,27 @@ class SpideyGame(Widget):
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def update(self, dt):
-		# char and background texture movement
-		if self.go_right:
-			self.spider_system.x += self.speed
-			#self.t += .1
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_left:
-			self.spider_system.x -= self.speed
-			#self.t -= .1
-			#self.ani = 'pas_ani.zip'
-		elif self.go_up:
-			self.spider_system.y += self.speed
-			#self.ani = 'pas_ani.zip'	
-		elif self.go_down:
-			self.spider_system.y -= self.speed
-			#self.ani = 'pas_ani.zip'	
-		#else: self.ani = 'data/pauk.jpg'	
-
-		#print(self.gameworld.state)
-		if self.gameworld.state == 'main':
-			print("it's main!")
-			Clock.schedule_once(self.start, 2.0)
+		if self.gameworld.gamescreenmanager.current == 'main':
+			# char and background texture movement
+			if self.go_right:
+				self.spider_system.x += self.speed
+				#self.t += .1
+				#self.ani = 'pas_ani.zip'	
+			elif self.go_left:
+				self.spider_system.x -= self.speed
+				#self.t -= .1
+				#self.ani = 'pas_ani.zip'
+			elif self.go_up:
+				self.spider_system.y += self.speed
+				#self.ani = 'pas_ani.zip'	
+			elif self.go_down:
+				self.spider_system.y -= self.speed
+				#self.ani = 'pas_ani.zip'	
+			#else: self.ani = 'data/pauk.jpg'	
+			if base.main == True:
+				#print("start the game, man!")
+				self.start_game()
+				base.main = False
 
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
@@ -120,14 +121,12 @@ class SpideyGame(Widget):
 		self.gameworld.state = args[0]
 
 	def start_game(self, *args):
-		self.current = 'main'
-		print("self.current:", self.current)
 		self.beetle_system.start()
 		print("Beetle system started")
 		self.spider_system.start()
 		print("Spider system started")
 
-	# Keyboard rules
+	# keyboard rules
 	def _keyboard_closed(self):
 		print('My keyboard has been closed!')
 		self._keyboard.unbind(on_key_down=self._on_keyboard_down)
@@ -136,6 +135,7 @@ class SpideyGame(Widget):
 
 	# capture the keyboard-down input and assign commands
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+		screenmanager = self.gameworld.gamescreenmanager
 		#print keycode
 		if keycode[1] == 'right':
 			self.go_right = True
@@ -148,16 +148,16 @@ class SpideyGame(Widget):
 		elif keycode[1] == 'spacebar':
 			self.web.draw_web()
 		elif keycode[1] == 'enter':
-			if App.get_running_app().sm.current == 'menu':
-				App.get_running_app().sm.current = 'main'
+			if screenmanager.current == 'menu':
+				screenmanager.current = 'main'
 		elif keycode[1] == 'backspace':
-			if App.get_running_app().sm.current == 'main':
-				App.get_running_app().sm.current = 'menu'
+			if screenmanager.current == 'main':
+				screenmanager.current = 'menu'
 		elif keycode[1] == 'escape':
-			if App.get_running_app().sm.current == 'menu':
+			if screenmanager.current == 'menu':
 				exit()
-			elif App.get_running_app().sm.current == 'main':
-				App.get_running_app().sm.current = 'menu'
+			elif screenmanager.current == 'main':
+				screenmanager.current = 'menu'
 		return True
 
 	# capture the keyboard-up input and assign commands
@@ -192,6 +192,19 @@ class StatusPanel(Widget):
 	def update_fps(self, dt):
 		self.fps = str(int(Clock.get_fps()))
 		Clock.schedule_once(self.update_fps, .05)
+
+class MenuScreen(Screen):
+	def start(self):
+		base.main = True
+
+class MainScreen(Screen):
+	pass
+
+class MessageScreen(Screen):
+	pass
+
+class Settings(Screen):
+	pass
 
 class SpideyApp(App):
 	pass
