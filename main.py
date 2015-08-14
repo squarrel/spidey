@@ -59,11 +59,11 @@ class SpideyGame(Widget):
 		self.screens = self.gameworld.gamescreenmanager
 
 	def init_game(self):
-		state = 'menu'
 		self.setup_states()
+		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
-		print("Initiated level")
+		print("Initiated the level")
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	# the update function; runs always
@@ -73,7 +73,7 @@ class SpideyGame(Widget):
 			pass
 
 		elif self.screens.current == 'main':
-			# char and background texture movement
+			# character movement, background texture movement, animation
 			if self.go_right:
 				self.spider_system.x += self.speed
 				#self.t += .1
@@ -88,66 +88,90 @@ class SpideyGame(Widget):
 			elif self.go_down:
 				self.spider_system.y -= self.speed
 				#self.ani = 'pas_ani.zip'	
-			#else: self.ani = 'data/pauk.jpg'	
-			
-			# if one of the switches is turned, perform action and turn it off again.
-			if base.switch == 'main':
-				#print("start the game, man!")
+			#else: self.ani = 'data/pauk.jpg'
+
+			# if one of the switches is turned, 
+			# perform an action and turn it off.
+			if base.switch == 'play':
 				self.start_game()
 				base.switch = None
-			elif base.switch == 'menu':
+			elif base.switch == 'pause':
+				self.pause_game()
+				base.switch = None
+			elif base.switch == 'resume':
+				self.resume_game()
+				base.switch = None
+			elif base.switch == 'stop':
 				self.stop_game()
 				base.switch = None
 
 		elif self.screens.current == 'message':
-			pass
+			if base.switch == 'stop':
+				self.stop_game()
+				base.switch = None
 
 		elif self.screens.current == 'settings':
 			pass
 
-	# setup different states to be used in the game; currently only one state type is used.
+	# setup different states to be used in the game;
+	# currently only one state type is used.
 	def setup_states(self):
-		self.gameworld.add_state(state_name='menu',
+		self.gameworld.add_state(state_name='stop',
 			systems_added=['renderer'],
-			systems_removed=[], systems_paused=[],
-			systems_unpaused=['renderer'],
+			systems_removed=[], systems_paused=['renderer'],
+			systems_unpaused=[],
 			screenmanager_screen='menu')
 
-		self.gameworld.add_state(state_name='main',
+		self.gameworld.add_state(state_name='play',
 			systems_added=['renderer'],
 			systems_removed=[], systems_paused=[],
 			systems_unpaused=['renderer'],
 			screenmanager_screen='main')
 
-		self.gameworld.add_state(state_name='message',
+		self.gameworld.add_state(state_name='pause',
 			systems_added=['renderer'],
-			systems_removed=[], systems_paused=[],
-			systems_unpaused=['renderer'],
+			systems_removed=[], systems_paused=['renderer'],
+			systems_unpaused=[],
 			screenmanager_screen='message')
-
-		self.gameworld.add_state(state_name='settings',
-			systems_added=['renderer'],
-			systems_removed=[], systems_paused=[],
-			systems_unpaused=['renderer'],
-			screenmanager_screen='settings')
 
 	# change state
 	def set_state(self, *args):
 		self.gameworld.state = args[0]
 
 	# start main game
-	def start_game(self, *args):
+	def start_game(self):
+		state = 'play'
+		self.set_state(state)
+
 		self.beetle_system.start()
 		print("Beetle system started")
 		self.spider_system.start()
 		print("Spider system started")
 
 	# stop main game
-	def stop_game(self, *args):
+	def stop_game(self):
+		state = 'stop'
+		self.set_state(state)
+
 		self.beetle_system.stop()
 		print("Beetle system stopped")
 		self.spider_system.stop()
 		print("Spider system stopped")
+
+	# pause main game
+	def pause_game(self):
+		state = 'pause'
+		self.set_state(state)
+
+		self.beetle_system.pause()
+		print("Beetle system paused")
+
+	def resume_game(self):
+		state = 'play'
+		self.set_state(state)
+
+		self.beetle_system.resume()
+		print("Beetle system resumed")
 
 	# keyboard rules
 	def _keyboard_closed(self):
@@ -223,14 +247,18 @@ class StatusPanel(Widget):
 
 class MenuScreen(Screen):
 	def start_game(self):
-		base.switch = 'main'
+		base.switch = 'play'
 
 class MainScreen(Screen):
-	def stop_game(self):
-		base.switch = 'menu'
+	def pause_game(self):
+		base.switch = 'pause'
 
 class MessageScreen(Screen):
-	pass
+	def resume_game(self):
+		base.switch = 'resume'
+
+	def stop_game(self):
+		base.switch = 'stop'
 
 class Settings(Screen):
 	pass

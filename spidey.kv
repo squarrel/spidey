@@ -134,10 +134,10 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .4, 'y': .9}
 		Button:
-			text: 'Exit'
+			text: 'Stop'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .8, 'y': .9}
-			on_press: root.stop_game()
+			on_press: root.pause_game()
 			on_release: root.manager.current = 'message'
 
 <MessageScreen@GameScreen>:
@@ -146,10 +146,11 @@ SpideyGame:
 		Label:
 			text: 'Paused'
 		Button:
-			text: 'Continue'
+			text: 'Resume'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .6}
 			on_press: root.manager.current = 'main'
+			on_release: root.resume_game()
 		Button:
 			text: 'Settings'
 			size_hint: (.2, .1)
@@ -160,6 +161,7 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .45, 'y': .3}
 			on_press: root.manager.current = 'menu'
+			on_release: root.stop_game()
 
 <SettingsScreen@GameScreen>:
 	name: 'settings'
