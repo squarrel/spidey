@@ -39,6 +39,8 @@ class BeetleSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				self.remove_beetle(entity_id)
+		Clock.unschedule(self.update)
+		Clock.unschedule(self.draw_stuff)
 
 	def draw_stuff(self, dt):
 		dir_to = choice(['N', 'S', 'W', 'E'])

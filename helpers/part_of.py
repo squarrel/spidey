@@ -50,7 +50,6 @@ class PartOf(object):
 			self.dir_first = 'W'
 
 	def part_of(self, *args):
-
 		x1, x2, y1, y2 = args[0], args[1], args[2], args[3]
 		a1, a2, b1, b2 = args[4], args[5], args[6], args[7]
 		self.direction(x1, x2, y1, y2, a1, a2, b1, b2)

@@ -62,13 +62,8 @@ class SpideyGame(Widget):
 		state = 'menu'
 		self.setup_states()
 		self.set_state(state)
-
 		base.initiate_level()
 		print("Initiated level")
-		#self.beetle_system.start()
-		#print("Beetle system started")
-		#self.spider_system.start()
-		#print("Spider system started")
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	# the update function; runs always
@@ -95,6 +90,7 @@ class SpideyGame(Widget):
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'	
 			
+			# if one of the switches is turned, perform action and turn it off again.
 			if base.switch == 'main':
 				#print("start the game, man!")
 				self.start_game()
@@ -102,15 +98,14 @@ class SpideyGame(Widget):
 			elif base.switch == 'menu':
 				self.stop_game()
 				base.switch = None
-				print(base.switch)
 
 		elif self.screens.current == 'message':
 			pass
 
-		elif self.screens.curren == 'settings':
+		elif self.screens.current == 'settings':
 			pass
 
-	# setup the states to be used in the game
+	# setup different states to be used in the game; currently only one state type is used.
 	def setup_states(self):
 		self.gameworld.add_state(state_name='menu',
 			systems_added=['renderer'],
@@ -146,7 +141,7 @@ class SpideyGame(Widget):
 		print("Beetle system started")
 		self.spider_system.start()
 		print("Spider system started")
-		
+
 	# stop main game
 	def stop_game(self, *args):
 		self.beetle_system.stop()
@@ -163,53 +158,57 @@ class SpideyGame(Widget):
 
 	# capture the keyboard-down input and assign commands
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-		# for assign each key its action
-		if keycode[1] == 'right':
-			self.go_right = True
-		elif keycode[1] == 'left':
-			self.go_left = True
-		elif keycode[1] == 'up':
-			self.go_up = True
-		elif keycode[1] == 'down':
-			self.go_down = True
-			
-		elif keycode[1] == 'spacebar':
-			self.web.draw_web()
-			
-		elif keycode[1] == 'enter':
-			if self.screens.current == 'menu':
+		# for each key assign an action
+
+		if self.screens.current == 'main':
+			# actions for the spider
+			if keycode[1] == 'right':
+				self.go_right = True
+			elif keycode[1] == 'left':
+				self.go_left = True
+			elif keycode[1] == 'up':
+				self.go_up = True
+			elif keycode[1] == 'down':
+				self.go_down = True
+			elif keycode[1] == 'spacebar':
+				self.web.draw_web()
+
+		elif self.screens.current == 'menu':
+			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-		elif keycode[1] == 'backspace':
-			if self.screens.current == 'main':
-				self.screens.current = 'menu'
-		elif keycode[1] == 'escape':
-			if self.screens.current == 'menu':
+				base.switch = 'main'
+			elif keycode[1] == 'escape':
 				exit()
-			elif self.screens.current == 'main':
-				self.screens.current = 'menu'
+
+		elif self.screens.current == 'message':
+			if keycode[1] == 'escape':
+				self.screens.current = 'main'
+
 		return True
 
 	# capture the keyboard-up input and assign commands
 	def _on_keyboard_up(self, keyboard, keycode):
-		if keycode[1] == 'right':
-			self.go_right = False
-		if keycode[1] == 'left':
-			self.go_left = False
-		if keycode[1] == 'up':
-			self.go_up = False
-		if keycode[1] == 'down':
-			self.go_down = False
-		return True
-	
+		if self.screens.current == 'main':
+			if keycode[1] == 'right':
+				self.go_right = False
+			if keycode[1] == 'left':
+				self.go_left = False
+			if keycode[1] == 'up':
+				self.go_up = False
+			if keycode[1] == 'down':
+				self.go_down = False
+			return True
+
 	# for touch-screens
 	def on_touch_down(self, touch):
 		if super(SpideyGame, self).on_touch_down(touch):
 			return True
 		touch.grab(self)
 		#self.points = self.points + list([win_x * char_x, win_y * char_y]) 
-		self.web.draw_web()
-		#print "touched"
-		#return True
+		if self.screens.current == 'main':
+			self.web.draw_web()
+			#print "touched"
+			#return True
 
 class StatusPanel(Widget):
 	fps = StringProperty(None)

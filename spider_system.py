@@ -26,6 +26,7 @@ class SpiderSystem(GameSystem):
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 		
 	def stop(self):
+		Clock.unschedule(self.update)
 		self.destroy_created_entity(self.spider)
 
 	def draw_stuff(self):
