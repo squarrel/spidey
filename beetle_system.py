@@ -3,16 +3,18 @@ from kivent_core.systems.gamesystem import GameSystem
 from kivent_core.managers.resource_managers import (
 	texture_manager, model_manager)
 from kivy.factory import Factory
+from kivy.properties import StringProperty, NumericProperty
 from kivy.clock import Clock
 from random import randint, choice
-from kivy.properties import StringProperty, NumericProperty
 from boxes import Boxes
 from base import Base
 from panel import Panel
 
-texture_manager.load_atlas('assets/background_objects.atlas')
-model_manager.load_textured_rectangle(4, 7., 7., 'star1', 'star1-4')
-model_manager.load_textured_rectangle(4, 10., 10., 'star1', 'star1-4-2')
+texture_manager.load_atlas('assets/beetles.atlas')
+model_manager.load_textured_rectangle(4, 7., 7., 'beetle_up', 'beetle_up')
+model_manager.load_textured_rectangle(4, 10., 10., 'beetle-down', 'beetle-down')
+model_manager.load_textured_rectangle(4, 10., 10., 'beetle_left', 'beetle_left')
+model_manager.load_textured_rectangle(4, 10., 10., 'beetle_right', 'beetle_right')
 
 win_x = Window.size[0]
 win_y = Window.size[1]
@@ -35,6 +37,7 @@ class BeetleSystem(GameSystem):
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def stop(self):
+		self.active = False
 		entities = self.gameworld.entities
 		for component in self.components:
 			if component is not None:
@@ -50,29 +53,39 @@ class BeetleSystem(GameSystem):
 		self.active = True
 
 	def draw_stuff(self, dt):
-		dir_to = choice(['N', 'S', 'W', 'E'])
+		if self.active:
+			dir_to = choice(['N', 'S', 'W', 'E'])
 
+			if dir_to == 'N':
+				x, y = randint(0, win_x), 0
+				image = 'beetle_up'
+			elif dir_to == 'S':
+				x, y = randint(0, win_x), win_y
+				image = 'beetle-down'
+			elif dir_to == 'W':
+				x, y = win_x, randint(0, win_y)
+				image = 'beetle_left'
+			elif dir_to == 'E':
+				x, y = 0, randint(0, win_y )
+				image = 'beetle_right'
+
+			ent_id = self.create_beetle(x, y, image)
+			self.beetles[ent_id] = [dir_to, 3]
+			#print(self.beetles)
+
+	def set_image(self, dir_to):
 		if dir_to == 'N':
-			x, y = randint(0, win_x), 0
-		elif dir_to == 'S':
-			x, y = randint(0, win_x), win_y
-		elif dir_to == 'W':
-			x, y = win_x, randint(0, win_y)
-		elif dir_to == 'E':
-			x, y = 0, randint(0, win_y )
-
-		ent_id = self.create_beetle(x, y)
-		self.beetles[ent_id] = [dir_to, 3]
-		#print(self.beetles)
+			image = 'beetle_up'
+			return image
 
 	def remove_beetle(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
-	def create_beetle(self, x, y):
-		vert_mesh_key = choice(['star1-4', 'star1-4-2'])
+	def create_beetle(self, x, y, image):
+		vert_mesh_key = image
 		create_dict = {
 			'position': (x, y),
-			'renderer': {'texture': 'star1',
+			'renderer': {'texture': image,
 				'vert_mesh_key': vert_mesh_key},
 			'beetle_system': {},
 			}

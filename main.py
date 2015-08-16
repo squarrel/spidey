@@ -70,7 +70,9 @@ class SpideyGame(Widget):
 	def update(self, dt):
 		# depending on wich screen is active, perform specific updates
 		if self.screens.current == 'menu':
-			pass
+			if base.switch == 'play':
+				self.start_game()
+				base.switch = None
 
 		elif self.screens.current == 'main':
 			# character movement, background texture movement, animation
@@ -160,11 +162,11 @@ class SpideyGame(Widget):
 
 	# pause main game
 	def pause_game(self):
-		state = 'pause'
-		self.set_state(state)
-
 		self.beetle_system.pause()
 		print("Beetle system paused")
+		
+		state = 'pause'
+		self.set_state(state)
 
 	def resume_game(self):
 		state = 'play'
@@ -180,7 +182,7 @@ class SpideyGame(Widget):
 		self._keyboard.unbind(on_key_up=self._on_keyboard_up)
 		self._keyboard = None
 
-	# capture the keyboard-down input and assign commands
+	# capture the keyboard down input and assign commands
 	def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
 		# for each key assign an action
 
@@ -210,7 +212,7 @@ class SpideyGame(Widget):
 
 		return True
 
-	# capture the keyboard-up input and assign commands
+	# capture the keyboard up input and assign commands
 	def _on_keyboard_up(self, keyboard, keycode):
 		if self.screens.current == 'main':
 			if keycode[1] == 'right':

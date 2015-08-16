@@ -34,3 +34,8 @@ class Base(object):
 		self.slices.append(1.0)
 		#print "divisions", self.divisions
 		#print "slices", self.slices
+		
+	def clear_level(self):
+		self.boxes = {}
+		self.slices = []
+		self.intersections = {}

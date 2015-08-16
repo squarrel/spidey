@@ -5,7 +5,6 @@ from kivy.properties import NumericProperty, StringProperty
 from kivent_core.systems.gamesystem import GameSystem
 from kivent_core.managers.resource_managers import (
 	texture_manager, model_manager)
-from random import randint, choice
 
 
 win_x = Window.size[0]
@@ -19,15 +18,18 @@ class SpiderSystem(GameSystem):
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
+		
+		self.spider = None
 
 	# start spider system
 	def start(self):
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
-		
+
 	def stop(self):
 		Clock.unschedule(self.update)
-		self.destroy_created_entity(self.spider)
+		if self.spider:
+			self.destroy_created_entity(self.spider)
 
 	def draw_stuff(self):
 		ent_id = self.create_spider(self.x, self.y)
@@ -36,10 +38,10 @@ class SpiderSystem(GameSystem):
 		self.gameworld.remove_entity(ent_id)
 
 	def create_spider(self, x, y):
-		vert_mesh_key = choice(['star1-4', 'star1-4-2'])
+		vert_mesh_key = 'beetle_left'
 		create_dict = {
 			'position': (win_x * x, win_y * y),
-			'renderer': {'texture': 'star1',
+			'renderer': {'texture': 'beetle_left',
 				'vert_mesh_key': vert_mesh_key},
 			'spider_system': {},
 			}
@@ -55,12 +57,6 @@ class SpiderSystem(GameSystem):
 				if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
 					pos.x = win_x * self.x
 					pos.y = win_y * self.y
-		
-		'''entity = self.gameworld.entities[self.spider]
-		pos = entity.position
-		if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
-			pos.x = win_x * self.x
-			pos.y = win_y * self.y'''
 
 
 Factory.register('SpiderSystem', cls=SpiderSystem)
