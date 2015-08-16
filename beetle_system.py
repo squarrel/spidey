@@ -70,7 +70,7 @@ class BeetleSystem(GameSystem):
 				image = 'beetle_right'
 
 			ent_id = self.create_beetle(x, y, image)
-			self.beetles[ent_id] = [dir_to, 3]
+			self.beetles[ent_id] = [dir_to, 3, 10]
 			#print(self.beetles)
 
 	def set_image(self, dir_to):
@@ -107,22 +107,38 @@ class BeetleSystem(GameSystem):
 					dist_y = win_y / 20
 					#print("current_box", current_box)
 
+					# for a given direction and current position,
 					if self.beetles[entity_id][0] == 'N':
+						# calculate the next box.
 						next_box = current_box + base.divisions
 						#print dir_to, current_box, next_box
 						if next_box in xrange(1, base.current_level):
+							# if the next box is a trap,
 							if base.boxes[next_box]:
+								# when you reach it,
 								if pos.y > (((next_box - 1) / div) * (win_y / div)) - dist_y:
+									# make a turn to a different direction
 									self.beetles[entity_id][0] = choice(['W', 'E'])
+									# and reduce beetle energy by 1.
 									self.beetles[entity_id][1] -= 1
+									
+									# if the bettle has no energy left,
 									if self.beetles[entity_id][1] == 0:
+										# remove it
 										self.remove_beetle(entity_id)
+										# and add score to the player.
 										self.score += 1
 										self.score_ = str(self.score)
 										break
 									else:
 										continue
-						pos.y += .95
+										
+						if self.beetles[entity_id][2] == 10 \
+						or self.beetles[entity_id][2] == 0:
+							pos.y += .95
+						elif 0 < self.beetles[entity_id][2] < 10:
+							self.beetles[entity_id][2] -= 1
+
 					elif self.beetles[entity_id][0] == 'S':
 						next_box = current_box - base.divisions
 						#print dir_to, current_box, next_box
@@ -139,6 +155,7 @@ class BeetleSystem(GameSystem):
 									else:
 										continue
 						pos.y -= .95
+
 					elif self.beetles[entity_id][0] == 'W':
 						next_box = current_box - 1
 						#print dir_to, current_box, next_box
@@ -155,6 +172,7 @@ class BeetleSystem(GameSystem):
 									else:
 										continue
 						pos.x -= .95
+
 					elif self.beetles[entity_id][0] == 'E':
 						next_box = current_box + 1
 						#print dir_to, current_box, next_box
