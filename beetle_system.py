@@ -70,7 +70,9 @@ class BeetleSystem(GameSystem):
 				image = 'beetle_right'
 
 			ent_id = self.create_beetle(x, y, image)
-			self.beetles[ent_id] = [dir_to, 3, 10]
+			# add the beetle to the dictionary along with values for
+			# direction, energy and 'wait for it' number
+			self.beetles[ent_id] = [dir_to, 3, 20]
 			#print(self.beetles)
 
 	def set_image(self, dir_to):
@@ -107,37 +109,41 @@ class BeetleSystem(GameSystem):
 					dist_y = win_y / 20
 					#print("current_box", current_box)
 
-					# for a given direction and current position,
+					# for a given direction and current position
 					if self.beetles[entity_id][0] == 'N':
-						# calculate the next box.
+						# calculate the next box
 						next_box = current_box + base.divisions
 						#print dir_to, current_box, next_box
 						if next_box in xrange(1, base.current_level):
-							# if the next box is a trap,
+							# if the next box is a trap
 							if base.boxes[next_box]:
-								# when you reach it,
+								# when you reach it
 								if pos.y > (((next_box - 1) / div) * (win_y / div)) - dist_y:
 									# make a turn to a different direction
 									self.beetles[entity_id][0] = choice(['W', 'E'])
-									# and reduce beetle energy by 1.
+									# reduce beetle energy by 1
 									self.beetles[entity_id][1] -= 1
-									
-									# if the bettle has no energy left,
+									# activate the 'wait for it' switch
+									# by reducing its value by 1.
+									self.beetles[entity_id][2] -= 1
+
+									# if the bettle has no energy left
 									if self.beetles[entity_id][1] == 0:
 										# remove it
 										self.remove_beetle(entity_id)
-										# and add score to the player.
+										# and add score to the player
 										self.score += 1
 										self.score_ = str(self.score)
 										break
 									else:
 										continue
-										
-						if self.beetles[entity_id][2] == 10 \
-						or self.beetles[entity_id][2] == 0:
-							pos.y += .95
-						elif 0 < self.beetles[entity_id][2] < 10:
+
+						if 0 < self.beetles[entity_id][2] < 20:
 							self.beetles[entity_id][2] -= 1
+						elif self.beetles[entity_id][2] == 0:
+							self.beetles[entity_id][2] = 20
+						else:
+							pos.y += .95
 
 					elif self.beetles[entity_id][0] == 'S':
 						next_box = current_box - base.divisions
@@ -147,6 +153,8 @@ class BeetleSystem(GameSystem):
 								if pos.y < (((next_box - 1) / div) * (win_y / div)) + win_y / div + dist_y:
 									self.beetles[entity_id][0] = choice(['W', 'E'])
 									self.beetles[entity_id][1] -= 1
+									self.beetles[entity_id][2] -= 1
+
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)
 										self.score += 1
@@ -154,7 +162,13 @@ class BeetleSystem(GameSystem):
 										break
 									else:
 										continue
-						pos.y -= .95
+
+						if 0 < self.beetles[entity_id][2] < 20:
+							self.beetles[entity_id][2] -= 1
+						elif self.beetles[entity_id][2] == 0:
+							self.beetles[entity_id][2] = 20
+						else:
+							pos.y -= .95
 
 					elif self.beetles[entity_id][0] == 'W':
 						next_box = current_box - 1
@@ -164,6 +178,8 @@ class BeetleSystem(GameSystem):
 								if pos.x < (((next_box - 1) % div) * (win_x / div)) + win_x / div + dist_x:
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1
+									self.beetles[entity_id][2] -= 1
+
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)
 										self.score += 1
@@ -171,7 +187,13 @@ class BeetleSystem(GameSystem):
 										break
 									else:
 										continue
-						pos.x -= .95
+
+						if 0 < self.beetles[entity_id][2] < 20:
+							self.beetles[entity_id][2] -= 1
+						elif self.beetles[entity_id][2] == 0:
+							self.beetles[entity_id][2] = 20
+						else:
+							pos.x -= .95
 
 					elif self.beetles[entity_id][0] == 'E':
 						next_box = current_box + 1
@@ -181,6 +203,8 @@ class BeetleSystem(GameSystem):
 								if pos.x > (((next_box - 1) % div) * (win_x / div)) - dist_x:
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1
+									self.beetles[entity_id][2] -= 1
+
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)
 										self.score += 1
@@ -188,7 +212,13 @@ class BeetleSystem(GameSystem):
 										break
 									else:
 										continue
-						pos.x += .95
+
+						if 0 < self.beetles[entity_id][2] < 20:
+							self.beetles[entity_id][2] -= 1
+						elif self.beetles[entity_id][2] == 0:
+							self.beetles[entity_id][2] = 20
+						else:
+							pos.x += .95
 
 					if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
 						self.remove_beetle(entity_id)

@@ -198,6 +198,8 @@ class SpideyGame(Widget):
 				self.go_down = True
 			elif keycode[1] == 'spacebar':
 				self.web.draw_web()
+			elif keycode[1] == 'escape':
+				self.screens.switch = 'message'
 
 		elif self.screens.current == 'menu':
 			if keycode[1] == 'enter':
