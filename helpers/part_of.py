@@ -10,44 +10,33 @@ class PartOf(object):
 	dir_first = ''
 	dir_second = ''
 
+	def get_direction(self, p, q, r, s):
+		direction = ''
+		# figure out the direction of lines, north-east, north-west...
+		if p < q and r < s:
+			direction = 'NE'
+		elif p > q and r < s:
+			direction = 'NW'
+		elif p < q and r > s:
+			direction = 'SE'
+		elif p > q and r > s:
+			direction = 'SW'
+		elif p == q and r < s:
+			direction = 'N'
+		elif p == q and r < s:
+			direction = 'S'
+		elif p < q and r == s:
+			direction = 'E'
+		elif p < q and r == s:
+			direction = 'W'
+		return direction
+
 	def direction(self, *args):
 		x1, x2, y1, y2 = args[0], args[1], args[2], args[3]
 		a1, a2, b1, b2 = args[4], args[5], args[6], args[7]
 
-		# Figure out the direction of lines, north-east, north-west...
-		if x1 < x2 and y1 < y2:
-			self.dir_first = 'NE'
-		elif x1 > x2 and y1 < y2:
-			self.dir_first = 'NW'
-		elif x1 < x2 and y1 > y2:
-			self.dir_first = 'SE'
-		elif x1 > x2 and y1 > y2:
-			self.dir_first = 'SW'
-		elif x1 == x2 and y1 < y2:
-			self.dir_first = 'N'
-		elif x1 == x2 and y2 < y1:
-			self.dir_first = 'S'
-		elif x1 < x2 and y1 == y2:
-			self.dir_first = 'E'
-		elif x2 < x1 and y1 == y2:
-			self.dir_first = 'W'
-
-		if a1 < a2 and b1 < b2:
-			self.dir_second = 'NE'
-		elif a1 > a2 and b1 < b2:
-			self.dir_second = 'NW'
-		elif a1 < a2 and b1 > b2:
-			self.dir_second = 'SE'
-		elif a1 > a2 and b1 > b2:
-			self.dir_second = 'SW'
-		elif a1 == a2 and b1 < b2:
-			self.dir_first = 'N'
-		elif a1 == a2 and b2 < b1:
-			self.dir_first = 'S'
-		elif a1 < a2 and b1 == b2:
-			self.dir_first = 'E'
-		elif a2 < a1 and b1 == b2:
-			self.dir_first = 'W'
+		self.dir_first = self.get_direction(x1, x2, y1, y2)
+		self.dir_second = self.get_direction(a1, a2, b1, b2)
 
 	def part_of(self, *args):
 		x1, x2, y1, y2 = args[0], args[1], args[2], args[3]
