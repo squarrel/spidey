@@ -3,8 +3,6 @@ from kivy.factory import Factory
 from kivy.clock import Clock
 from kivy.properties import NumericProperty, StringProperty
 from kivent_core.systems.gamesystem import GameSystem
-from kivent_core.managers.resource_managers import (
-	texture_manager, model_manager)
 
 
 win_x = Window.size[0]

@@ -1,7 +1,6 @@
 from kivy.core.window import Window
 from kivent_core.systems.gamesystem import GameSystem
-from kivent_core.managers.resource_managers import (
-	texture_manager, model_manager)
+from kivent_core.gameworld import GameWorld
 from kivy.factory import Factory
 from kivy.properties import StringProperty, NumericProperty
 from kivy.clock import Clock
@@ -10,11 +9,6 @@ from boxes import Boxes
 from base import Base
 from panel import Panel
 
-texture_manager.load_atlas('assets/beetles.atlas')
-model_manager.load_textured_rectangle(4, 7., 7., 'beetle_up', 'beetle_up')
-model_manager.load_textured_rectangle(4, 10., 10., 'beetle-down', 'beetle-down')
-model_manager.load_textured_rectangle(4, 10., 10., 'beetle_left', 'beetle_left')
-model_manager.load_textured_rectangle(4, 10., 10., 'beetle_right', 'beetle_right')
 
 win_x = Window.size[0]
 win_y = Window.size[1]
@@ -61,7 +55,7 @@ class BeetleSystem(GameSystem):
 				image = 'beetle_up'
 			elif dir_to == 'S':
 				x, y = randint(0, win_x), win_y
-				image = 'beetle-down'
+				image = 'beetle_down'
 			elif dir_to == 'W':
 				x, y = win_x, randint(0, win_y)
 				image = 'beetle_left'
@@ -71,7 +65,7 @@ class BeetleSystem(GameSystem):
 
 			ent_id = self.create_beetle(x, y, image)
 			# add the beetle to the dictionary along with values for
-			# direction, energy and 'wait for it' number
+			# direction, energy and 'waiting' value
 			self.beetles[ent_id] = [dir_to, 3, 20]
 			#print(self.beetles)
 
@@ -84,11 +78,10 @@ class BeetleSystem(GameSystem):
 		self.gameworld.remove_entity(ent_id)
 
 	def create_beetle(self, x, y, image):
-		vert_mesh_key = image
 		create_dict = {
 			'position': (x, y),
 			'renderer': {'texture': image,
-				'vert_mesh_key': vert_mesh_key},
+				'vert_mesh_key': image},
 			'beetle_system': {},
 			}
 		return self.gameworld.init_entity(create_dict, ['position',
@@ -102,6 +95,7 @@ class BeetleSystem(GameSystem):
 				if component is not None:
 					entity_id = component.entity_id
 					pos = entities[entity_id].position
+					render_comp = entities[entity_id].renderer
 					current_box = self.boxes.current_box(pos.x, pos.y)
 					div = base.divisions
 					remove_beetle = self.remove_beetle
@@ -114,18 +108,24 @@ class BeetleSystem(GameSystem):
 						# calculate the next box
 						next_box = current_box + base.divisions
 						#print dir_to, current_box, next_box
+
 						if next_box in xrange(1, base.current_level):
 							# if the next box is a trap
 							if base.boxes[next_box]:
-								# when you reach it
+								# when a beetle reaches it
 								if pos.y > (((next_box - 1) / div) * (win_y / div)) - dist_y:
 									# make a turn to a different direction
 									self.beetles[entity_id][0] = choice(['W', 'E'])
 									# reduce beetle energy by 1
 									self.beetles[entity_id][1] -= 1
 									# activate the 'wait for it' switch
-									# by reducing its value by 1.
+									# by reducing its third value by 1.
 									self.beetles[entity_id][2] -= 1
+									# change beetle's texture to suit the new direction
+									if self.beetles[entity_id][0] == 'W':
+										render_comp.texture_key = 'beetle_left'
+									else:
+										render_comp.texture_key = 'beetle_right'
 
 									# if the bettle has no energy left
 									if self.beetles[entity_id][1] == 0:
@@ -138,6 +138,7 @@ class BeetleSystem(GameSystem):
 									else:
 										continue
 
+						# make the beetle pause and/or continue
 						if 0 < self.beetles[entity_id][2] < 20:
 							self.beetles[entity_id][2] -= 1
 						elif self.beetles[entity_id][2] == 0:
@@ -154,6 +155,10 @@ class BeetleSystem(GameSystem):
 									self.beetles[entity_id][0] = choice(['W', 'E'])
 									self.beetles[entity_id][1] -= 1
 									self.beetles[entity_id][2] -= 1
+									if self.beetles[entity_id][0] == 'W':
+										render_comp.texture_key = 'beetle_left'
+									else:
+										render_comp.texture_key = 'beetle_right'
 
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)
@@ -179,6 +184,10 @@ class BeetleSystem(GameSystem):
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1
 									self.beetles[entity_id][2] -= 1
+									if self.beetles[entity_id][0] == 'N':
+										render_comp.texture_key = 'beetle_up'
+									else:
+										render_comp.texture_key = 'beetle_down'
 
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)
@@ -204,6 +213,10 @@ class BeetleSystem(GameSystem):
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1
 									self.beetles[entity_id][2] -= 1
+									if self.beetles[entity_id][0] == 'N':
+										render_comp.texture_key = 'beetle_up'
+									else:
+										render_comp.texture_key = 'beetle_down'
 
 									if self.beetles[entity_id][1] == 0:
 										self.remove_beetle(entity_id)

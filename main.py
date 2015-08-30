@@ -16,13 +16,14 @@ from functools import partial
 import kivent_core
 import kivent_cymunk
 from kivent_core.gameworld import GameWorld
-from kivent_core.managers.resource_managers import (
-	texture_manager, model_manager)
-from kivent_core.rendering.vertmesh import VertMesh
+#from kivent_core.managers.resource_managers import (
+	#texture_manager, model_manager)
+#from kivent_core.rendering.vertmesh import VertMesh
 from kivent_core.systems.renderers import RotateRenderer
 from kivent_core.systems.position_systems import PositionSystem2D
 from kivent_core.systems.rotate_systems import RotateSystem2D
 from kivent_core.systems.gamesystem import GameSystem
+from kivent_core.managers.resource_managers import texture_manager
 
 from spider_system import SpiderSystem
 from beetle_system import BeetleSystem
@@ -32,6 +33,7 @@ from web import Web
 from panel import Panel
 
 
+texture_manager.load_atlas('assets/beetles.atlas')
 win_x = Window.size[0]
 win_y = Window.size[1]
 base = Base()
@@ -60,11 +62,19 @@ class SpideyGame(Widget):
 
 	def init_game(self):
 		self.setup_states()
+		self.load_models()
 		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
 		print("Initiated the level")
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
+
+	def load_models(self):
+		model_manager = self.gameworld.model_manager
+		model_manager.load_textured_rectangle('vertex_format_4f', 1., 1., 'beetle_up', 'beetle_up')
+		model_manager.load_textured_rectangle('vertex_format_4f', 1., 1., 'beetle_down', 'beetle_down')
+		model_manager.load_textured_rectangle('vertex_format_4f', 1., 1., 'beetle_left', 'beetle_left')
+		model_manager.load_textured_rectangle('vertex_format_4f', 1., 1., 'beetle_right', 'beetle_right')
 
 	# the update function; runs always
 	def update(self, dt):
