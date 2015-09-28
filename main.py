@@ -8,17 +8,9 @@ from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty, ListProperty
 from kivy.uix.screenmanager import Screen
 
-from random import randint, choice
-import math
-from math import radians, pi, sin, cos
-from functools import partial
-
 import kivent_core
 import kivent_cymunk
 from kivent_core.gameworld import GameWorld
-#from kivent_core.managers.resource_managers import (
-	#texture_manager, model_manager)
-#from kivent_core.rendering.vertmesh import VertMesh
 from kivent_core.systems.renderers import RotateRenderer
 from kivent_core.systems.position_systems import PositionSystem2D
 from kivent_core.systems.rotate_systems import RotateSystem2D
@@ -173,7 +165,9 @@ class SpideyGame(Widget):
 	# pause main game
 	def pause_game(self):
 		self.beetle_system.pause()
+		self.spider_system.stop()
 		print("Beetle system paused")
+		print("Spider system stopped")
 		
 		state = 'pause'
 		self.set_state(state)
@@ -183,7 +177,9 @@ class SpideyGame(Widget):
 		self.set_state(state)
 
 		self.beetle_system.resume()
+		self.spider_system.start()
 		print("Beetle system resumed")
+		print("Spider system started")
 
 	# keyboard rules
 	def _keyboard_closed(self):
@@ -208,19 +204,22 @@ class SpideyGame(Widget):
 				self.go_down = True
 			elif keycode[1] == 'spacebar':
 				self.web.draw_web()
+			
 			elif keycode[1] == 'escape':
 				self.screens.switch = 'message'
+				base.switch = 'pause'
 
 		elif self.screens.current == 'menu':
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-				base.switch = 'main'
+				base.switch = 'play'
 			elif keycode[1] == 'escape':
 				exit()
 
 		elif self.screens.current == 'message':
 			if keycode[1] == 'escape':
 				self.screens.current = 'main'
+				base.switch = 'play'
 
 		return True
 
@@ -237,7 +236,7 @@ class SpideyGame(Widget):
 				self.go_down = False
 			return True
 
-	# for touch-screens
+	# for touch screens
 	def on_touch_down(self, touch):
 		if super(SpideyGame, self).on_touch_down(touch):
 			return True
