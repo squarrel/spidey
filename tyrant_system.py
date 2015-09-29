@@ -3,6 +3,7 @@ from kivent_core.systems.gamesystem import GameSystem
 from kivy.factory import Factory
 from kivy.properties import StringProperty, NumericProperty
 from kivy.clock import Clock
+from random import randint, choice
 
 
 win_x = Window.size[0]
@@ -11,8 +12,8 @@ win_y = Window.size[1]
 class TyrantSystem(GameSystem):
 
 	system_id = StringProperty('tyrant_system')
-	x = NumericProperty(.15)
-	y = NumericProperty(.15)
+	tyrants = {}
+	active = False
 
 	def __init__(self, *args, **kwargs):
 		super(TyrantSystem, self).__init__(*args, **kwargs)
@@ -20,28 +21,53 @@ class TyrantSystem(GameSystem):
 
 	def start(self):
 		self.draw_stuff()
+		self.active = True
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def stop(self):
+		self.active = False
+		entities = self.gameworld.entities
+		for component in self.components:
+			if component is not None:
+				entity_id = component.entity_id
+				self.remove_tyrant(entity_id)
 		Clock.unschedule(self.update)
-		if self.tyrant:
-			self.destroy_entity(self.tyrant)
+
+	def pause(self):
+		self.active = False
+
+	def resume(self):
+		self.active = True
 
 	def draw_stuff(self):
-		ent_id = self.create_tyrant(self.x, self.y)
+		if self.active:
+			dir_to = choice(['N', 'S', 'W', 'E'])
 
-	def destroy_entity(self, ent_id):
+			if dir_to == 'N':
+				image = 'beetle_up'
+			elif dir_to == 'S':
+				image = 'beetle_down'
+			elif dir_to = 'W':
+				image = 'beetle_left'
+			elif dir_to == 'E':
+				image = 'beetle_right'
+			x, y = randint(0, win_x), randint(0, win_y)
+
+		ent_id = self.create_tyrant(x, y, image)
+		self.tyrants[ent_id] = [dir_to, 3]
+
+	def remove_tyrant(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
-	def create_tyrant(self, x, y):
+	def create_tyrant(self, x, y, image):
 		vert_mesh_key = 'beetle_left'
 		create_dict = {
 			'position': (win_x * x, win_y * y),
-			'renderer': {'texture': 'beetle_left',
-						'vert_mesh_key': vert_mesh_key},
+			'renderer': {'texture': image,
+						'vert_mesh_key': image},
 			'tyrant_system': {},
 			}
-		self.tyrant = self.gameworld.init_entity(create_dict, ['position',
+		return self.gameworld.init_entity(create_dict, ['position',
 			'renderer', 'tyrant_system'])
 
 	def update(self, dt):
