@@ -19,6 +19,7 @@ from kivent_core.managers.resource_managers import texture_manager
 
 from spider_system import SpiderSystem
 from beetle_system import BeetleSystem
+from tyrant_system import TyrantSystem
 from boxes import Boxes
 from base import Base
 from web import Web
@@ -58,7 +59,7 @@ class SpideyGame(Widget):
 		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
-		print("Initiated the level")
+		print("initiated the level")
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def load_models(self):
@@ -148,9 +149,11 @@ class SpideyGame(Widget):
 		self.set_state(state)
 
 		self.beetle_system.start()
-		print("Beetle system started")
 		self.spider_system.start()
-		print("Spider system started")
+		self.tyrant_system.start()
+		print("beetle system started")
+		print("spider system started")
+		print("tyrant system started")
 
 	# stop main game
 	def stop_game(self):
@@ -158,16 +161,20 @@ class SpideyGame(Widget):
 		self.set_state(state)
 
 		self.beetle_system.stop()
-		print("Beetle system stopped")
 		self.spider_system.stop()
-		print("Spider system stopped")
+		self.tyrant_system.stop()
+		print("beetle system stopped")
+		print("spider system stopped")
+		print("tyrant system stopped")
 
 	# pause main game
 	def pause_game(self):
 		self.beetle_system.pause()
 		self.spider_system.stop()
-		print("Beetle system paused")
-		print("Spider system stopped")
+		self.tyrant_system.stop()
+		print("beetle system paused")
+		print("spider system stopped")
+		print("tyrant system stopped")
 		
 		state = 'pause'
 		self.set_state(state)
@@ -178,8 +185,10 @@ class SpideyGame(Widget):
 
 		self.beetle_system.resume()
 		self.spider_system.start()
-		print("Beetle system resumed")
-		print("Spider system started")
+		self.tyrant_system.start()
+		print("beetle system resumed")
+		print("spider system started")
+		print("tyrant system started")
 
 	# keyboard rules
 	def _keyboard_closed(self):

@@ -16,10 +16,8 @@ class SpiderSystem(GameSystem):
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
-
 		self.spider = None
 
-	# start spider system
 	def start(self):
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)

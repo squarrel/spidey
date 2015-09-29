@@ -9,14 +9,13 @@ win_x = Window.size[0]
 win_y = Window.size[1]
 
 class TyrantSystem(GameSystem):
-	
+
 	system_id = StringProperty('tyrant_system')
 	x = NumericProperty(.15)
-	y = NnumericProperty(.15)
-	
+	y = NumericProperty(.15)
+
 	def __init__(self, *args, **kwargs):
 		super(TyrantSystem, self).__init__(*args, **kwargs)
-		
 		self.tyrant = None
 
 	def start(self):
@@ -26,7 +25,7 @@ class TyrantSystem(GameSystem):
 	def stop(self):
 		Clock.unschedule(self.update)
 		if self.tyrant:
-			self.destroy_entity(tyrant)
+			self.destroy_entity(self.tyrant)
 
 	def draw_stuff(self):
 		ent_id = self.create_tyrant(self.x, self.y)
@@ -34,7 +33,7 @@ class TyrantSystem(GameSystem):
 	def destroy_entity(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
-	def create_entity(self, x, y):
+	def create_tyrant(self, x, y):
 		vert_mesh_key = 'beetle_left'
 		create_dict = {
 			'position': (win_x * x, win_y * y),
@@ -51,9 +50,15 @@ class TyrantSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
-					pos.x = win_x * self.x
-					pos.y = win_y * self.y
+				pos.x = win_x * self.x
+				pos.y = win_y * self.y
+				current_box = self.boxes.current_box(pos.x, pos.y)
+				# targetbox is where the spider is at
+				target_box = self.boxes.current_box(self.spider_system.x, 
+													self.spider_system.y)
+				#print self.spider_system.x
+				#print self.spider_system.y
+				#print self.boxes
 
 
 Factory.register('TyrantSystem', cls=TyrantSystem)

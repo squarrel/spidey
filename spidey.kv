@@ -6,6 +6,7 @@ SpideyGame:
 	gameworld: gameworld
 	spider_system: spider_system
 	beetle_system: beetle_system
+	tyrant_system: tyrant_system
 	boxes: boxes
 	web: web
 	panel: panel
@@ -37,6 +38,13 @@ SpideyGame:
 		BeetleSystem:
 			id: beetle_system
 			system_id: 'beetle_system'
+			boxes: boxes
+			gameworld: gameworld
+			updateable: True
+		TyrantSystem:
+			id: tyrant_system
+			system_id: 'tyrant_system'
+			spider_system: spider_system
 			boxes: boxes
 			gameworld: gameworld
 			updateable: True

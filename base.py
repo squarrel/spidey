@@ -22,7 +22,7 @@ class Base(object):
 		super(Base, self).__init__(**kwargs)
 
 	def initiate_level(self):
-		# initiate levels (sort of), prepare boxes
+		# initiate levels, prepare boxes
 		for i in xrange(1, self.current_level + 1):
 			self.boxes[i] = False
 		#print "boxes", self.boxes

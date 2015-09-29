@@ -10,7 +10,7 @@ win_y = Window.size[1]
 base = Base()
 
 class Boxes(Widget):
-	
+
 	def print_boxes(self, x, y):
 		i = 1
 		j = 1
@@ -36,7 +36,7 @@ class Boxes(Widget):
 
 			j = 1
 			i += 1
-			
+
 	def current_box(self, x, y):
 		i = 1
 		j = 1
