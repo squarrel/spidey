@@ -80,18 +80,22 @@ class SpideyGame(Widget):
 		elif self.screens.current == 'main':
 			# character movement, background texture movement, animation
 			if self.go_right:
-				self.spider_system.x += self.speed
+				if self.spider_system.x * win_x < win_x - 5:
+					self.spider_system.x += self.speed
 				#self.t += .1
-				#self.ani = 'pas_ani.zip'	
+				#self.ani = 'pas_ani.zip'
 			elif self.go_left:
-				self.spider_system.x -= self.speed
+				if self.spider_system.x * win_x > 5:
+					self.spider_system.x -= self.speed
 				#self.t -= .1
 				#self.ani = 'pas_ani.zip'
 			elif self.go_up:
-				self.spider_system.y += self.speed
+				if self.spider_system.y * win_y < win_y - 5:
+					self.spider_system.y += self.speed
 				#self.ani = 'pas_ani.zip'	
 			elif self.go_down:
-				self.spider_system.y -= self.speed
+				if self.spider_system.y * win_y > 5:
+					self.spider_system.y -= self.speed
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'
 

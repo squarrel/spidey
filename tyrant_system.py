@@ -46,16 +46,16 @@ class TyrantSystem(GameSystem):
 			dir_to = choice(['N', 'S', 'W', 'E'])
 
 			if dir_to == 'N':
-				x, y = randint(0, win_x), 0
+				x, y = randint(0, win_x), 15
 				image = 'beetle_up'
 			elif dir_to == 'S':
-				x, y = randint(0, win_x), win_y
+				x, y = randint(0, win_x), win_y - 15
 				image = 'beetle_down'
 			elif dir_to == 'W':
-				x, y = win_x, randint(0, win_y)
+				x, y = win_x - 15, randint(0, win_y)
 				image = 'beetle_left'
 			elif dir_to == 'E':
-				x, y = 0, randint(0, win_y)
+				x, y = 15, randint(0, win_y)
 				image = 'beetle_right'
 
 			ent_id = self.create_tyrant(x, y, image)
@@ -85,23 +85,24 @@ class TyrantSystem(GameSystem):
 				pos = entities[entity_id].position
 				direction = self.tyrants[entity_id][0]
 				render_comp = entities[entity_id].renderer
+				
 				tyrant_box = self.boxes.current_box(pos.x, pos.y)
-				spider_x = round(self.spider_system.x * 1000, 2)
-				spider_y = round(self.spider_system.y * 1000, 2)
-				# the box where the spider is at
+				spider_x = round(self.spider_system.x * win_x, 2)
+				spider_y = round(self.spider_system.y * win_y, 2)
 				spider_box = self.boxes.current_box(spider_x, spider_y)
 				div = base.divisions
 				# current row where the tyrant is
-				#tyrant_row = (tyrant_box / div) + 1
-				#spider_row = (spider_box / div) + 1
-				print "pos.x, pos.y", pos.x, pos.y
+				tyrant_row = (tyrant_box / div) + 1
+				spider_row = (spider_box / div) + 1
+				#print win_x, "x", win_y
+				print "tyrant.x, tyrant.y", pos.x, pos.y
+				print "spider_x, spider_y", spider_x, spider_y
 				#print "self.tyrants[entity_id][0]", self.tyrants[entity_id][0]
 				#print base.boxes
-				#print "tyrant_box", tyrant_box
-				print win_x, "x", win_y
-				print "spider_x, spider_y", spider_x, spider_y
+				print "tyrant_box", tyrant_box
 				print "spider_box", spider_box
-				#print "tyrant_row", tyrant_row)#, spider_row", tyrant_row, spider_row
+				print "tyrant_row", tyrant_row
+				print "spider_row", spider_row
 
 				'''if tyrant_row == spider_row:
 					if pos.x > spider_x:
@@ -126,7 +127,7 @@ class TyrantSystem(GameSystem):
 				#if tyrant_box == spider_box:
 					#print "BEATEN!"
 
-				if pos.x < 0 or pos.x > win_x - 0 or pos.y < 0 or pos.y > win_y - 0:
+				if pos.x < 10 or pos.x > win_x - 10 or pos.y < 10 or pos.y > win_y - 10:
 					#self.remove_tyrant(entity_id)
 					self.tyrants[entity_id][0] = self.reverse(direction)
 					#print "tyrant removed, cause out of screen"
