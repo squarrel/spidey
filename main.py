@@ -59,7 +59,7 @@ class SpideyGame(Widget):
 		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
-		print("initiated the level")
+		print("level initiated", win_x, "x", win_y)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def load_models(self):
@@ -148,10 +148,10 @@ class SpideyGame(Widget):
 		state = 'play'
 		self.set_state(state)
 
-		self.beetle_system.start()
+		#self.beetle_system.start()
 		self.spider_system.start()
 		self.tyrant_system.start()
-		print("beetle system started")
+		#print("beetle system started")
 		print("spider system started")
 		print("tyrant system started")
 

@@ -26,8 +26,8 @@ class BeetleSystem(GameSystem):
 		super(BeetleSystem, self).__init__(*args, **kwargs)
 
 	def start(self):
-		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
 		self.active = True
+		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def stop(self):
@@ -98,7 +98,6 @@ class BeetleSystem(GameSystem):
 					render_comp = entities[entity_id].renderer
 					current_box = self.boxes.current_box(pos.x, pos.y)
 					div = base.divisions
-					remove_beetle = self.remove_beetle
 					dist_x = win_x / 20
 					dist_y = win_y / 20
 					#print("current_box", current_box)
@@ -233,6 +232,7 @@ class BeetleSystem(GameSystem):
 						else:
 							pos.x += .95
 
+					# remove beetle when it goes out of the visible screen
 					if pos.x < 0 or pos.x > win_x or pos.y < 0 or pos.y > win_y:
 						self.remove_beetle(entity_id)
 

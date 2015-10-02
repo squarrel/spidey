@@ -11,7 +11,7 @@ LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
-	current_level = LEVELS[2]
+	current_level = LEVELS[0]
 	boxes = {}
 	slices = []
 	intersections = {}
@@ -33,7 +33,7 @@ class Base(object):
 			#print(j)
 		self.slices.append(1.0)
 		#print "divisions", self.divisions
-		#print "slices", self.slices
+		print "slices", self.slices
 		
 	def clear_level(self):
 		self.boxes = {}

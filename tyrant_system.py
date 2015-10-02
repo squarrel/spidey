@@ -4,10 +4,12 @@ from kivy.factory import Factory
 from kivy.properties import StringProperty, NumericProperty
 from kivy.clock import Clock
 from random import randint, choice
+from base import Base
 
 
 win_x = Window.size[0]
 win_y = Window.size[1]
+base = Base()
 
 class TyrantSystem(GameSystem):
 
@@ -20,8 +22,8 @@ class TyrantSystem(GameSystem):
 		self.tyrant = None
 
 	def start(self):
-		self.draw_stuff()
 		self.active = True
+		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
 	def stop(self):
@@ -44,25 +46,29 @@ class TyrantSystem(GameSystem):
 			dir_to = choice(['N', 'S', 'W', 'E'])
 
 			if dir_to == 'N':
+				x, y = randint(0, win_x), 0
 				image = 'beetle_up'
 			elif dir_to == 'S':
+				x, y = randint(0, win_x), win_y
 				image = 'beetle_down'
-			elif dir_to = 'W':
+			elif dir_to == 'W':
+				x, y = win_x, randint(0, win_y)
 				image = 'beetle_left'
 			elif dir_to == 'E':
+				x, y = 0, randint(0, win_y)
 				image = 'beetle_right'
-			x, y = randint(0, win_x), randint(0, win_y)
 
-		ent_id = self.create_tyrant(x, y, image)
-		self.tyrants[ent_id] = [dir_to, 3]
+			ent_id = self.create_tyrant(x, y, image)
+			#print "starting x, y", x, y
+			self.tyrants[ent_id] = [dir_to, 3]
+			#print self.tyrants
 
 	def remove_tyrant(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
 	def create_tyrant(self, x, y, image):
-		vert_mesh_key = 'beetle_left'
 		create_dict = {
-			'position': (win_x * x, win_y * y),
+			'position': (x, y),
 			'renderer': {'texture': image,
 						'vert_mesh_key': image},
 			'tyrant_system': {},
@@ -72,19 +78,67 @@ class TyrantSystem(GameSystem):
 
 	def update(self, dt):
 		entities = self.gameworld.entities
+
 		for component in self.components:
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				pos.x = win_x * self.x
-				pos.y = win_y * self.y
-				current_box = self.boxes.current_box(pos.x, pos.y)
-				# targetbox is where the spider is at
-				target_box = self.boxes.current_box(self.spider_system.x, 
-													self.spider_system.y)
-				#print self.spider_system.x
-				#print self.spider_system.y
-				#print self.boxes
+				direction = self.tyrants[entity_id][0]
+				render_comp = entities[entity_id].renderer
+				tyrant_box = self.boxes.current_box(pos.x, pos.y)
+				spider_x = round(self.spider_system.x * 1000, 2)
+				spider_y = round(self.spider_system.y * 1000, 2)
+				# the box where the spider is at
+				spider_box = self.boxes.current_box(spider_x, spider_y)
+				div = base.divisions
+				# current row where the tyrant is
+				#tyrant_row = (tyrant_box / div) + 1
+				#spider_row = (spider_box / div) + 1
+				print "pos.x, pos.y", pos.x, pos.y
+				#print "self.tyrants[entity_id][0]", self.tyrants[entity_id][0]
+				#print base.boxes
+				#print "tyrant_box", tyrant_box
+				print win_x, "x", win_y
+				print "spider_x, spider_y", spider_x, spider_y
+				print "spider_box", spider_box
+				#print "tyrant_row", tyrant_row)#, spider_row", tyrant_row, spider_row
 
+				'''if tyrant_row == spider_row:
+					if pos.x > spider_x:
+						self.tyrants[entity_id][0] = 'W'
+					elif pos.x < spider_x:
+						self.tyrants[entity_id][0] = 'E'
+				elif tyrant_row > spider_row:
+					self.tyrants[entity_id][0] = 'N'
+				elif tyrant_row < spider_row:
+					self.tyrants[entity_id][0] = 'S'
+				'''
+
+				if direction == 'N':
+					pos.y += .95
+				elif direction == 'S':
+					pos.y -= .95
+				elif direction == 'W':
+					pos.x -= .95
+				elif direction == 'E':
+					pos.x += .95
+
+				#if tyrant_box == spider_box:
+					#print "BEATEN!"
+
+				if pos.x < 0 or pos.x > win_x - 0 or pos.y < 0 or pos.y > win_y - 0:
+					#self.remove_tyrant(entity_id)
+					self.tyrants[entity_id][0] = self.reverse(direction)
+					#print "tyrant removed, cause out of screen"
+
+	def reverse(self, direction):
+		if direction == 'N':
+			return 'S'
+		elif direction == 'S':
+			return 'N'
+		elif direction == 'W':
+			return 'E'
+		elif direction == 'E':
+			return 'W'
 
 Factory.register('TyrantSystem', cls=TyrantSystem)

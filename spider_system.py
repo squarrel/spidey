@@ -12,7 +12,7 @@ class SpiderSystem(GameSystem):
 
 	system_id = StringProperty('spider_system')
 	x = NumericProperty(.15)
-	y = NumericProperty(.15)
+	y = NumericProperty(.55)
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
@@ -25,12 +25,12 @@ class SpiderSystem(GameSystem):
 	def stop(self):
 		Clock.unschedule(self.update)
 		if self.spider:
-			self.destroy_created_entity(self.spider)
+			self.remove_spider(self.spider)
 
 	def draw_stuff(self):
 		ent_id = self.create_spider(self.x, self.y)
 
-	def destroy_created_entity(self, ent_id):
+	def remove_spider(self, ent_id):
 		self.gameworld.remove_entity(ent_id)
 
 	def create_spider(self, x, y):
@@ -50,9 +50,9 @@ class SpiderSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
-					pos.x = win_x * self.x
-					pos.y = win_y * self.y
+				#if 0 <= pos.x <= win_x and 0 <= pos.y <= win_y:
+				pos.x = win_x * self.x
+				pos.y = win_y * self.y
 
 
 Factory.register('SpiderSystem', cls=SpiderSystem)
