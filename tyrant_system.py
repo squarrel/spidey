@@ -95,25 +95,14 @@ class TyrantSystem(GameSystem):
 				tyrant_row = (tyrant_box / div) + 1
 				spider_row = (spider_box / div) + 1
 				#print win_x, "x", win_y
-				print "tyrant.x, tyrant.y", pos.x, pos.y
-				print "spider_x, spider_y", spider_x, spider_y
+				#print "tyrant.x, tyrant.y", pos.x, pos.y
+				#print "spider_x, spider_y", spider_x, spider_y
 				#print "self.tyrants[entity_id][0]", self.tyrants[entity_id][0]
 				#print base.boxes
-				print "tyrant_box", tyrant_box
-				print "spider_box", spider_box
-				print "tyrant_row", tyrant_row
-				print "spider_row", spider_row
-
-				'''if tyrant_row == spider_row:
-					if pos.x > spider_x:
-						self.tyrants[entity_id][0] = 'W'
-					elif pos.x < spider_x:
-						self.tyrants[entity_id][0] = 'E'
-				elif tyrant_row > spider_row:
-					self.tyrants[entity_id][0] = 'N'
-				elif tyrant_row < spider_row:
-					self.tyrants[entity_id][0] = 'S'
-				'''
+				#print "tyrant_box", tyrant_box
+				#print "spider_box", spider_box
+				#print "tyrant_row", tyrant_row
+				#print "spider_row", spider_row
 
 				if direction == 'N':
 					pos.y += .95
@@ -124,8 +113,22 @@ class TyrantSystem(GameSystem):
 				elif direction == 'E':
 					pos.x += .95
 
-				#if tyrant_box == spider_box:
-					#print "BEATEN!"
+				if tyrant_row == spider_row:
+					if pos.x > spider_x:
+						print "should be W now"
+						self.tyrants[entity_id][0] = 'W'
+					elif pos.x < spider_x:
+						print "should be E now"
+						self.tyrants[entity_id][0] = 'E'
+				elif tyrant_row > spider_row:
+					print "should be S now"
+					self.tyrants[entity_id][0] = 'S'
+				elif tyrant_row < spider_row:
+					print "should be N now"
+					self.tyrants[entity_id][0] = 'N'
+
+				if tyrant_box == spider_box:
+					print "BEATEN!"
 
 				if pos.x < 10 or pos.x > win_x - 10 or pos.y < 10 or pos.y > win_y - 10:
 					#self.remove_tyrant(entity_id)
