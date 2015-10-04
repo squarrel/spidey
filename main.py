@@ -59,6 +59,7 @@ class SpideyGame(Widget):
 		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
+		self.boxes.draw_background(base.LEV_1)
 		print("level initiated", win_x, "x", win_y)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 

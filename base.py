@@ -17,6 +17,14 @@ class Base(object):
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
 	switch = None
+	LEV_1 = [0, 0, 0, win_y/divisions, win_x, win_y/divisions, 
+			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2, 0, (win_y/divisions)*3,
+			win_x, (win_y/divisions)*3, win_x, win_y,	0, win_y,
+			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
+			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
+			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
+			win_x, win_y, win_x, 0, 0, 0]
+	LEV_2 = []
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)
@@ -33,7 +41,7 @@ class Base(object):
 			#print(j)
 		self.slices.append(1.0)
 		#print "divisions", self.divisions
-		print "slices", self.slices
+		#print "slices", self.slices
 		
 	def clear_level(self):
 		self.boxes = {}

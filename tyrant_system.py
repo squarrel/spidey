@@ -16,6 +16,7 @@ class TyrantSystem(GameSystem):
 	system_id = StringProperty('tyrant_system')
 	tyrants = {}
 	active = False
+	on_mark = False
 
 	def __init__(self, *args, **kwargs):
 		super(TyrantSystem, self).__init__(*args, **kwargs)
@@ -115,16 +116,16 @@ class TyrantSystem(GameSystem):
 
 				if tyrant_row == spider_row:
 					if pos.x > spider_x:
-						print "should be W now"
+						#print "should be W now"
 						self.tyrants[entity_id][0] = 'W'
 					elif pos.x < spider_x:
-						print "should be E now"
+						#print "should be E now"
 						self.tyrants[entity_id][0] = 'E'
 				elif tyrant_row > spider_row:
-					print "should be S now"
+					#print "should be S now"
 					self.tyrants[entity_id][0] = 'S'
 				elif tyrant_row < spider_row:
-					print "should be N now"
+					#print "should be N now"
 					self.tyrants[entity_id][0] = 'N'
 
 				if tyrant_box == spider_box:

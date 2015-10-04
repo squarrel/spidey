@@ -1,7 +1,7 @@
 from kivy.core.window import Window
 from kivy.factory import Factory
 from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle, Color
+from kivy.graphics import Rectangle, Color, Line
 from base import Base
 
 
@@ -48,7 +48,6 @@ class Boxes(Widget):
 				#print "j", j
 				if win_x * base.slices[j-1] <= x <= win_x * base.slices[j] \
 				and win_y * base.slices[i-1] <= y <= win_y * base.slices[i]:
-					#print("k", k)
 					return k
 				#else:
 					#print "--->", win_y * base.slices[i-1], y, win_y * base.slices[i]
@@ -59,5 +58,12 @@ class Boxes(Widget):
 
 			j = 1
 			i += 1
+
+	def draw_background(self, lev):
+		# draw background
+		div = base.divisions
+		with self.canvas.before:
+			color = Color(.7, .7, .7, .3)
+			Line(points=lev, width=3)
 
 Factory.register('Boxes', cls=Boxes)
