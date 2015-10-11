@@ -17,6 +17,7 @@ class Solve(object):
 	crosspoints = []
 	memo = []
 	part_of = part_of.PartOf()
+	total = 0
 
 	def collect(self, points):
 		#print('len(points)', len(points))
@@ -46,7 +47,6 @@ class Solve(object):
 							#print "points length:", len(points)
 							#print "i:", i
 							#print "j:", j
-
 							self.intersection(
 								points[i],
 								points[i+1],
@@ -89,7 +89,7 @@ class Solve(object):
 		i2 = b1 - b2
 		j2 = a1 - a2
 
-		# Figure out the slopes
+		# figure out the slopes
 		m1 = 0
 		m2 = 0
 		if j1 != 0:  # escape division by zero exception
@@ -101,26 +101,30 @@ class Solve(object):
 		m_dif = m1 - m2
 		#print "m1, m2, m_dif", m1, m2, m_dif
 
-		# Figure out x and y
+		# figure out x and y
 		x = 0
 		if m_dif != 0:
 			x = ((m1*x1) - (m2*a1) + b1 - y1) / float(m_dif)
 		y = (m1*x) - (m1*x1) + y1
 
-		# Round them up
+		# round them up
 		x = round(x, 2)
 		y = round(y, 2)
-
-		#print "x, y", x, y
+		#print "intersection point, x, y", x, y
 
 		# if the intersection is anywhere on the lines themselves, include the intersection
 		if x > 0 and y > 0 and x < win_x and y < win_y:  # and x != x1 and x != a1 and x != x2 and x != a2:
+			#print "intersection point, x, y", x, y
+			#self.crosspoints.append([x, y])
 			#print "x1, x2, y1, y2, a1, a2, b1, b2, x, y"
 			#print x1, x2, y1, y2, a1, a2, b1, b2, x, y
 			
-			if self.part_of.part_of(x1, x2, y1, y2, a1, a2, b1, b2, x, y):
+			if self.part_of.part_of(x1, y1, x2, y2, a1, b1, a2, b2, x, y):
+				#print "crosspoint acknowledged", self.total
 				self.crosspoints.append([x, y])
 				#print('crosspoints', self.crosspoints)
 				self.memo.append([i, j])
+				#print("self.memo", self.memo)
+				self.total += 1
 			else:
 				self.memo.append([i, j])

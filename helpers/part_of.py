@@ -10,40 +10,35 @@ class PartOf(object):
 	dir_first = ''
 	dir_second = ''
 
-	def get_direction(self, p, q, r, s):
+	def get_direction(self, p1, q1, p2, q2):
 		direction = ''
 		# figure out the direction of lines, north-east, north-west...
-		if p < q and r < s:
+		if p1 < p2 and q1 < q2:
 			direction = 'NE'
-		elif p > q and r < s:
+		elif p1 > p2 and q1 < q2:
 			direction = 'NW'
-		elif p < q and r > s:
+		elif p1 < p2 and q1 > q2:
 			direction = 'SE'
-		elif p > q and r > s:
+		elif p1 > p2 and q1 > q2:
 			direction = 'SW'
-		elif p == q and r < s:
+		elif p1 == p2 and q1 < q2:
 			direction = 'N'
-		elif p == q and r < s:
+		elif p1 == p2 and q1 > q2:
 			direction = 'S'
-		elif p < q and r == s:
+		elif p1 < p2 and q1 == q2:
 			direction = 'E'
-		elif p < q and r == s:
+		elif p1 > p2 and q1 == q2:
 			direction = 'W'
+		print "direction", direction
 		return direction
 
-	def direction(self, *args):
-		x1, x2, y1, y2 = args[0], args[1], args[2], args[3]
-		a1, a2, b1, b2 = args[4], args[5], args[6], args[7]
-
-		self.dir_first = self.get_direction(x1, x2, y1, y2)
-		self.dir_second = self.get_direction(a1, a2, b1, b2)
+	def direction(self, x1, y1, x2, y2, a1, b1, a2, b2):
+		self.dir_first = self.get_direction(x1, y1, x2, y2)
+		self.dir_second = self.get_direction(a1, b1, a2, b2)
 
 	# see if the intersection point is anywhere on our lines
-	def part_of(self, *args):
-		x1, x2, y1, y2 = args[0], args[1], args[2], args[3]
-		a1, a2, b1, b2 = args[4], args[5], args[6], args[7]
-		self.direction(x1, x2, y1, y2, a1, a2, b1, b2)
-		x, y = args[8], args[9]
+	def part_of(self, x1, y1, x2, y2, a1, b1, a2, b2, x, y):
+		self.direction(x1, y1, x2, y2, a1, b1, a2, b2)
 		dir_first = self.dir_first
 		dir_second = self.dir_second
 

@@ -155,10 +155,10 @@ class SpideyGame(Widget):
 
 		#self.beetle_system.start()
 		self.spider_system.start()
-		self.tyrant_system.start()
+		#self.tyrant_system.start()
 		#print("beetle system started")
 		print("spider system started")
-		print("tyrant system started")
+		#print("tyrant system started")
 
 	# stop main game
 	def stop_game(self):

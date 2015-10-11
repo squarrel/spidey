@@ -129,7 +129,8 @@ class TyrantSystem(GameSystem):
 					self.tyrants[entity_id][0] = 'N'
 
 				if tyrant_box == spider_box:
-					print "BEATEN!"
+					#print "BEATEN!"
+					pass
 
 				if pos.x < 10 or pos.x > win_x - 10 or pos.y < 10 or pos.y > win_y - 10:
 					#self.remove_tyrant(entity_id)
