@@ -27,12 +27,14 @@ class Web(Widget):
 
 		# make calculations with points
 		solve.collect(self.points)
-		#print('len(crosspoints)', len(solve.crosspoints))
 
 		# draw them crosspoints, if there are new ones.
 		if self.prev_len != len(solve.crosspoints):
+			#print('len(crosspoints)', len(solve.crosspoints))
+			#print('crosspoints', solve.crosspoints)
 			#print('draw')
-			for i in xrange(1, len(solve.crosspoints) - self.prev_len):
+			for i in xrange(0, len(solve.crosspoints)): # <--- here bug
+				#print('to draw')
 				#print "len(crosspoints)", len(solve.crosspoints), "prev_len", self.prev_len
 				#print solve.crosspoints[-i][0], solve.crosspoints[-i][1]
 				with self.canvas:
