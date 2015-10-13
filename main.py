@@ -285,6 +285,8 @@ class MainScreen(Screen):
 		base.switch = 'pause'
 
 class MessageScreen(Screen):
+	message = base.message
+
 	def resume_game(self):
 		base.switch = 'resume'
 
