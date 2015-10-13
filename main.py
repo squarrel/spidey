@@ -115,6 +115,11 @@ class SpideyGame(Widget):
 				self.stop_game()
 				base.switch = None
 
+			if self.beetle_system.score > 5:
+				base.message = "Congratulations! You passed the level"
+				self.stop_game()
+				self.screens.current = 'message'
+
 		elif self.screens.current == 'message':
 			if base.switch == 'stop':
 				self.stop_game()
@@ -123,8 +128,7 @@ class SpideyGame(Widget):
 		elif self.screens.current == 'settings':
 			pass
 
-	# setup different states to be used in the game;
-	# currently only one state type is used.
+	# setup different states to be used in the game
 	def setup_states(self):
 		self.gameworld.add_state(state_name='stop',
 			systems_added=['renderer'],
@@ -161,7 +165,7 @@ class SpideyGame(Widget):
 		print("tyrant system started")
 
 	# stop main game
-	def stop_game(self):
+	def stop_game(self, *args):
 		state = 'stop'
 		self.set_state(state)
 
@@ -180,7 +184,7 @@ class SpideyGame(Widget):
 		print("beetle system paused")
 		print("spider system stopped")
 		print("tyrant system stopped")
-		
+
 		state = 'pause'
 		self.set_state(state)
 
@@ -218,7 +222,7 @@ class SpideyGame(Widget):
 				self.go_down = True
 			elif keycode[1] == 'spacebar':
 				self.web.draw_web()
-			
+
 			elif keycode[1] == 'escape':
 				self.screens.switch = 'message'
 				base.switch = 'pause'

@@ -25,6 +25,7 @@ class Base(object):
 			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
 			win_x, win_y, win_x, 0, 0, 0]
 	LEV_2 = []
+	message = ''
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)
