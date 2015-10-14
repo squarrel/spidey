@@ -1,4 +1,4 @@
-# Spidey Scientist
+# Spidey the Scientist
 
 from kivy.app import App
 print('imported kivy')
@@ -39,6 +39,7 @@ class SpideyGame(Widget):
 	go_down = False
 	speed = .003
 	message = StringProperty('')
+	win_y = win_y
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -116,9 +117,17 @@ class SpideyGame(Widget):
 				self.stop_game()
 				base.switch = None
 
-			if self.beetle_system.score > 5:
-				self.message = "Congratulations! You passed the level"
+			if self.beetle_system.score > 2 and base.current_level == base.LEVELS[0]:
 				self.stop_game()
+				base.current_level = base.LEVELS[1]
+				self.message = "Congratulations! You passed to the 2nd level."
+				base.transition = True
+				self.screens.current = 'message'
+			elif self.beetle_system.score > 4 and base.current_level == base.LEVELS[1]:
+				self.stop_game()
+				base.current_level = base.LEVELS[2]
+				self.message = "Congratulations! You passed to the 3rd level."
+				base.transition = True
 				self.screens.current = 'message'
 
 		elif self.screens.current == 'message':
@@ -155,6 +164,7 @@ class SpideyGame(Widget):
 
 	# start main game
 	def start_game(self):
+		self.message = ''
 		state = 'play'
 		self.set_state(state)
 
@@ -290,6 +300,10 @@ class MainScreen(Screen):
 class MessageScreen(Screen):
 
 	def resume_game(self):
+		if base.transition:
+			base.transition = False
+			base.switch = 'play'
+			return
 		base.switch = 'resume'
 
 	def stop_game(self):

@@ -89,8 +89,8 @@ SpideyGame:
 				text: 'Score: ' + beetle_system.score_	if gamescreenmanager.current == 'main' else ''
 			Label:
 				text: root.message
-				pos: root.pos[0] * 44, root.pos[1] * 47
-				size: root.size[0] * .15, root.size[1] * .15
+				pos: root.pos[0], root.win_y / 3
+				size: root.size[0], root.size[1]
 				font_size: root.size[1] * .04
 				color: (1, 1, 1, 1)
 

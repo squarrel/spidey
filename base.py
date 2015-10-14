@@ -7,16 +7,17 @@ from helpers import solve
 win_x = Window.size[0]
 win_y = Window.size[1]
 alive = True
-LEVELS = [16, 25, 36, 49, 64]
 
 class Base(object):
 
+	LEVELS = [16, 25, 36, 49, 64]
 	current_level = LEVELS[0]
 	boxes = {}
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level))
 	switch = None
+	transition = True
 	LEV_1 = [0, 0, 0, win_y/divisions, win_x, win_y/divisions, 
 			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2, 0, (win_y/divisions)*3,
 			win_x, (win_y/divisions)*3, win_x, win_y,	0, win_y,
