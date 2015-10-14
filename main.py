@@ -38,6 +38,7 @@ class SpideyGame(Widget):
 	go_up = False
 	go_down = False
 	speed = .003
+	message = StringProperty('')
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -116,7 +117,7 @@ class SpideyGame(Widget):
 				base.switch = None
 
 			if self.beetle_system.score > 5:
-				base.message = "Congratulations! You passed the level"
+				self.message = "Congratulations! You passed the level"
 				self.stop_game()
 				self.screens.current = 'message'
 
@@ -236,8 +237,8 @@ class SpideyGame(Widget):
 
 		elif self.screens.current == 'message':
 			if keycode[1] == 'escape':
-				self.screens.current = 'main'
-				base.switch = 'play'
+				self.screens.current = 'menu'
+				base.switch = 'stop'
 
 		return True
 
@@ -277,15 +278,16 @@ class StatusPanel(Widget):
 		Clock.schedule_once(self.update_fps, .05)
 
 class MenuScreen(Screen):
+
 	def start_game(self):
 		base.switch = 'play'
 
 class MainScreen(Screen):
+
 	def pause_game(self):
 		base.switch = 'pause'
 
 class MessageScreen(Screen):
-	message = base.message
 
 	def resume_game(self):
 		base.switch = 'resume'

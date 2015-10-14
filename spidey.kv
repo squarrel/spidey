@@ -87,6 +87,12 @@ SpideyGame:
 				font_size: root.size[1] * .03
 				color: (1, 1, 1, 1)
 				text: 'Score: ' + beetle_system.score_	if gamescreenmanager.current == 'main' else ''
+			Label:
+				text: root.message
+				pos: root.pos[0] * 44, root.pos[1] * 47
+				size: root.size[0] * .15, root.size[1] * .15
+				font_size: root.size[1] * .04
+				color: (1, 1, 1, 1)
 
 	GameScreenManager:
 		id: gamescreenmanager
@@ -142,7 +148,7 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .4, 'y': .9}
 		Button:
-			text: 'Stop'
+			text: 'Pause'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .8, 'y': .9}
 			on_press: root.pause_game()
@@ -151,23 +157,14 @@ SpideyGame:
 <MessageScreen@GameScreen>:
 	name: 'message'
 	FloatLayout:
-		Label:
-			text: root.message
-			size_hint: (.2, .1)
-			pos_hint: {'x': .4, 'y': .8}
 		Button:
 			text: 'Resume'
 			size_hint: (.2, .1)
-			pos_hint: {'x': .4, 'y': .6}
+			pos_hint: {'x': .4, 'y': .45}
 			on_press: root.manager.current = 'main'
 			on_release: root.resume_game()
 		Button:
-			text: 'Settings'
-			size_hint: (.2, .1)
-			pos_hint: {'x': .4, 'y': .45}
-			on_press: root.manager.current = 'settings'
-		Button:
-			text: 'Exit to main menu'
+			text: 'Exit'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .4, 'y': .3}
 			on_press: root.manager.current = 'menu'
@@ -187,11 +184,13 @@ SpideyGame:
 			on_press: root.manager.current = 'menu'
 
 <StatusPanel>:
-	Label:
-		pos: root.pos
-		size: root.size
-		font_size: root.size[1] * .5
-		halign: 'center'
-		valign: 'middle'
-		color: (1, 1, 1, 1)
-		text: 'FPS: ' + root.fps if root.fps != None else 'FPS:'
+	#Label:
+		#pos: root.pos
+		#size: root.size
+		#font_size: root.size[1] * .5
+		#halign: 'center'
+		#valign: 'middle'
+		#color: (1, 1, 1, 1)
+		#text: 'FPS: ' + root.fps if root.fps != None else 'FPS:'
+	#Label:
+		#text: root.message if root.show == True else 'zero'
