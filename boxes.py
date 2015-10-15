@@ -71,5 +71,8 @@ class Boxes(Widget):
 			color = Color(.7, .7, .7, .3)
 			Line(points=lev, width=3)
 
+	def clear_background(self):
+		self.canvas.clear()
+
 
 Factory.register('Boxes', cls=Boxes)

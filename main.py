@@ -61,7 +61,7 @@ class SpideyGame(Widget):
 		state = 'stop'
 		self.set_state(state)
 		base.initiate_level()
-		self.boxes.draw_background(base.LEV_1)
+		self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
 		print("level initiated", win_x, "x", win_y)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -250,6 +250,8 @@ class SpideyGame(Widget):
 					base.transition = False
 					base.clear_level()
 					base.initiate_level()
+					self.boxes.clear_background()
+					#self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
 					base.switch = 'play'
 					self.screens.current = 'main'
 			if keycode[1] == 'enter':

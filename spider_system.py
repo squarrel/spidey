@@ -50,7 +50,6 @@ class SpiderSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				#if 0 < pos.x < win_x and 0 < pos.y < win_y:
 				pos.x = win_x * self.x
 				pos.y = win_y * self.y
 

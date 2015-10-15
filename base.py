@@ -6,7 +6,6 @@ from helpers import solve
 
 win_x = Window.size[0]
 win_y = Window.size[1]
-alive = True
 
 class Base(object):
 
@@ -18,15 +17,29 @@ class Base(object):
 	divisions = int(math.sqrt(current_level))
 	switch = None
 	transition = True
-	LEV_1 = [0, 0, 0, win_y/divisions, win_x, win_y/divisions, 
+	LEV_1 = [
+			0, 0, 0, win_y/divisions, win_x, win_y/divisions, 
 			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
 			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
 			win_x, win_y, 0, win_y,
 			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
 			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
 			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
-			win_x, win_y, win_x, 0, 0, 0]
-	LEV_2 = []
+			win_x, win_y, win_x, 0, 0, 0
+			]
+	LEV_2 = [
+			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
+			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
+			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
+			0, (win_y/divisions)*4, win_x, (win_y/divisions)*4,
+			win_x, win_y, 0, win_y,
+			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
+			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
+			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
+			(win_x/divisions)*4, 0, (win_x/divisions)*4, win_y,
+			win_x, win_y, win_x, 0, 0, 0
+			]
+	LEVEL_MAP = [LEV_1, LEV_2]
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)
