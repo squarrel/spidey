@@ -250,10 +250,9 @@ class SpideyGame(Widget):
 					base.transition = False
 					base.clear_level()
 					base.initiate_level()
-					self.boxes.clear_background()
-					#self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
-					base.switch = 'play'
+					self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
 					self.screens.current = 'main'
+					self.start_game()
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
 				base.switch = 'resume'

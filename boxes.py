@@ -63,7 +63,7 @@ class Boxes(Widget):
 
 	def draw_background(self, lev):
 		# clear canvas
-		self.canvas.clear()
+		self.clear_background()
 
 		# draw background
 		div = base.divisions
@@ -72,7 +72,7 @@ class Boxes(Widget):
 			Line(points=lev, width=3)
 
 	def clear_background(self):
-		self.canvas.clear()
+		self.canvas.before.clear()
 
 
 Factory.register('Boxes', cls=Boxes)
