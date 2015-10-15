@@ -246,6 +246,15 @@ class SpideyGame(Widget):
 				exit()
 
 		elif self.screens.current == 'message':
+			if keycode[1] == 'enter' and base.transition:
+					base.transition = False
+					base.clear_level()
+					base.initiate_level()
+					base.switch = 'play'
+					self.screens.current = 'main'
+			if keycode[1] == 'enter':
+				self.screens.current = 'main'
+				base.switch = 'resume'
 			if keycode[1] == 'escape':
 				self.screens.current = 'menu'
 				base.switch = 'stop'
@@ -302,6 +311,8 @@ class MessageScreen(Screen):
 	def resume_game(self):
 		if base.transition:
 			base.transition = False
+			base.clear_level()
+			base.initiate_level()
 			base.switch = 'play'
 			return
 		base.switch = 'resume'

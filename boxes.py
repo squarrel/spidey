@@ -42,6 +42,8 @@ class Boxes(Widget):
 		j = 1
 		k = 1
 		#print "base.slices", base.slices
+		#print "base.boxes", base.boxes
+		#print "base.divisions", base.divisions
 		while i <= len(base.slices) - 1:
 			#print "i", i
 			while j <= len(base.slices) - 1:
@@ -60,10 +62,14 @@ class Boxes(Widget):
 			i += 1
 
 	def draw_background(self, lev):
+		# clear canvas
+		self.canvas.clear()
+
 		# draw background
 		div = base.divisions
 		with self.canvas.before:
 			color = Color(.7, .7, .7, .3)
 			Line(points=lev, width=3)
+
 
 Factory.register('Boxes', cls=Boxes)

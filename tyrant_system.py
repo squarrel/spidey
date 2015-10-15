@@ -88,10 +88,12 @@ class TyrantSystem(GameSystem):
 				render_comp = entities[entity_id].renderer
 				
 				tyrant_box = self.boxes.current_box(pos.x, pos.y)
+				#print "tyrant_box", tyrant_box
 				spider_x = round(self.spider_system.x * win_x, 2)
 				spider_y = round(self.spider_system.y * win_y, 2)
 				spider_box = self.boxes.current_box(spider_x, spider_y)
 				div = base.divisions
+				#print "base.divisions", base.divisions
 				# current row where the tyrant is
 				tyrant_row = (tyrant_box / div) + 1
 				spider_row = (spider_box / div) + 1
