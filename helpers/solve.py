@@ -130,4 +130,6 @@ class Solve(object):
 				self.memo.append([i, j])
 
 	def clear(self):
-		self.crosspoints = []
+		del self.crosspoints[:]
+		del self.memo[:]
+		self.total = 0

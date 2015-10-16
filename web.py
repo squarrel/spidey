@@ -23,8 +23,8 @@ class Web(Widget):
 		b = round(win_y * self.spider_system.y, 2)
 		#print "a, b", a, b
 		self.points = self.points + list([a, b])
-		print "self.points", self.points
-		print "prev_len", self.prev_len
+		#print "self.points", self.points
+		#print "prev_len", self.prev_len
 
 		# make calculations with points
 		solve.collect(self.points)

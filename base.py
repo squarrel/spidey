@@ -28,7 +28,7 @@ class Base(object):
 			win_x, win_y, win_x, 0, 0, 0
 			]
 	LEV_2 = [
-			110, 210, 230, win_y/divisions, win_x, win_y/divisions,
+			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
 			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
 			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
 			win_x, (win_y/divisions)*4, 0, (win_y/divisions)*4,
@@ -60,6 +60,6 @@ class Base(object):
 		
 	def clear_level(self):
 		self.boxes.clear()
-		self.slices = []
+		del self.slices[:]
 		self.intersections.clear()
 		self.divisions = int(math.sqrt(self.current_level))

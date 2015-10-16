@@ -29,7 +29,7 @@ class PartOf(object):
 			direction = 'E'
 		elif p1 > p2 and q1 == q2:
 			direction = 'W'
-		print "direction", direction
+		#print "direction", direction
 		return direction
 
 	def direction(self, x1, y1, x2, y2, a1, b1, a2, b2):
