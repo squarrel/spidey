@@ -28,16 +28,16 @@ class Base(object):
 			win_x, win_y, win_x, 0, 0, 0
 			]
 	LEV_2 = [
-			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
+			110, 210, 230, win_y/divisions, win_x, win_y/divisions,
 			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
 			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
-			0, (win_y/divisions)*4, win_x, (win_y/divisions)*4,
-			win_x, win_y, 0, win_y,
+			win_x, (win_y/divisions)*4, 0, (win_y/divisions)*4,
+			0, win_y, win_x, win_y, 0, win_y,
 			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
 			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
 			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
-			(win_x/divisions)*4, 0, (win_x/divisions)*4, win_y,
-			win_x, win_y, win_x, 0, 0, 0
+			(win_x/divisions)*4, win_y, (win_x/divisions)*4, 0,
+			win_x, 0, win_x, win_y, win_x, 0, 0, 0
 			]
 	LEVEL_MAP = [LEV_1, LEV_2]
 
@@ -45,24 +45,21 @@ class Base(object):
 		super(Base, self).__init__(**kwargs)
 
 	def initiate_level(self):
-		# clear level
-		#self.clear_level()
-
 		# initiate levels, prepare boxes
 		for i in xrange(1, self.current_level + 1):
 			self.boxes[i] = False
-		print "boxes", self.boxes
+		#print "boxes", self.boxes
 
 		# setup slices
 		for j in xrange(self.divisions):
 			self.slices.append((100 / self.divisions) * j / 100.0)
 			#print(j)
 		self.slices.append(1.0)
-		print "divisions", self.divisions
-		print "slices", self.slices
+		#print "divisions", self.divisions
+		#print "slices", self.slices
 		
 	def clear_level(self):
-		self.boxes = {}
+		self.boxes.clear()
 		self.slices = []
-		self.intersections = {}
+		self.intersections.clear()
 		self.divisions = int(math.sqrt(self.current_level))

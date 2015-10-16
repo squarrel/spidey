@@ -65,14 +65,14 @@ class Boxes(Widget):
 		# clear canvas
 		self.clear_background()
 
-		# draw background
-		div = base.divisions
+		print "lev", lev
 		with self.canvas.before:
 			color = Color(.7, .7, .7, .3)
 			Line(points=lev, width=3)
 
 	def clear_background(self):
 		self.canvas.before.clear()
+		self.canvas.after.clear()
 
 
 Factory.register('Boxes', cls=Boxes)

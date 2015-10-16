@@ -125,6 +125,9 @@ class Solve(object):
 				#print('crosspoints', self.crosspoints)
 				self.memo.append([i, j])
 				#print("self.memo", self.memo)
-				self.total += 1
+				#self.total += 1
 			else:
 				self.memo.append([i, j])
+
+	def clear(self):
+		self.crosspoints = []

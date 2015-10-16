@@ -23,7 +23,8 @@ class Web(Widget):
 		b = round(win_y * self.spider_system.y, 2)
 		#print "a, b", a, b
 		self.points = self.points + list([a, b])
-		#print "self.points", self.points
+		print "self.points", self.points
+		print "prev_len", self.prev_len
 
 		# make calculations with points
 		solve.collect(self.points)
@@ -44,3 +45,10 @@ class Web(Widget):
 					self.boxes.print_boxes(solve.crosspoints[-i][0], solve.crosspoints[-i][1])
 				self.prev_len = len(solve.crosspoints)
 				#print "prev_len", self.prev_len
+
+	def clear_web(self):
+		solve.clear()
+		self.prev_len = 0
+		self.canvas.clear()
+		self.points = [win_x * .5, win_y * .5]
+		self.points2 = [win_x * 4, win_y * .4]
