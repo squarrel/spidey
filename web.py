@@ -2,7 +2,7 @@ from kivy.core.window import Window
 from kivy.properties import ListProperty, NumericProperty
 from kivy.factory import Factory
 from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle, Ellipse, Color
+from kivy.graphics import Rectangle, Ellipse, Color, Line
 from helpers import solve
 from spider_system import SpiderSystem
 from boxes import Boxes
@@ -15,7 +15,6 @@ solve = solve.Solve()
 class Web(Widget):
 
 	points = ListProperty([win_x * .5, win_y * .5])
-	points2 = ListProperty([win_x * 4, win_y * .4])
 	prev_len = 0
 
 	def draw_web(self):
@@ -25,6 +24,12 @@ class Web(Widget):
 		self.points = self.points + list([a, b])
 		#print "self.points", self.points
 		#print "prev_len", self.prev_len
+		# draw the web
+		with self.canvas:
+			Color(.4,.4,1,1)
+			Line(points=self.points, joint='round', cap='round', width=4, close=False)
+			Color(.8,.8,.8,1)
+			Line(points=self.points, close=False)
 
 		# make calculations with points
 		solve.collect(self.points)
@@ -39,7 +44,7 @@ class Web(Widget):
 				#print "len(crosspoints)", len(solve.crosspoints), "prev_len", self.prev_len
 				#print solve.crosspoints[-i][0], solve.crosspoints[-i][1]
 				with self.canvas:
-					Color(1,0.9,0)
+					Color(1, 0.9, 0)
 					Ellipse(pos=(solve.crosspoints[-i][0], solve.crosspoints[-i][1]), size = (15, 15))
 					# change boxes colors accordingly
 					self.boxes.print_boxes(solve.crosspoints[-i][0], solve.crosspoints[-i][1])
@@ -50,5 +55,5 @@ class Web(Widget):
 		solve.clear()
 		self.prev_len = 0
 		self.canvas.clear()
+		del self.points[:]
 		self.points = [win_x * .5, win_y * .5]
-		self.points2 = [win_x * 4, win_y * .4]

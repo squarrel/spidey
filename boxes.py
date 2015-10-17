@@ -65,7 +65,7 @@ class Boxes(Widget):
 		# clear canvas
 		self.clear_background()
 
-		print "lev", lev
+		#print "lev", lev
 		with self.canvas.before:
 			color = Color(.7, .7, .7, .3)
 			Line(points=lev, width=3)

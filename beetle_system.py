@@ -16,7 +16,7 @@ base = Base()
 
 class BeetleSystem(GameSystem):
 
-	system_id = StringProperty('beetle_system')
+	#system_id = StringProperty('beetle_system')
 	beetles = {}
 	score = 0
 	score_ = StringProperty(str(score))

@@ -10,7 +10,7 @@ win_y = Window.size[1]
 
 class SpiderSystem(GameSystem):
 
-	system_id = StringProperty('spider_system')
+	#system_id = StringProperty('spider_system')
 	x = NumericProperty(.15)
 	y = NumericProperty(.55)
 

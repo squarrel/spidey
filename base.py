@@ -45,19 +45,20 @@ class Base(object):
 		super(Base, self).__init__(**kwargs)
 
 	def initiate_level(self):
-		# initiate levels, prepare boxes
+		# prepare boxes
 		for i in xrange(1, self.current_level + 1):
 			self.boxes[i] = False
 		#print "boxes", self.boxes
+		#print "divisions", self.divisions
 
-		# setup slices
+		# prepare slices
 		for j in xrange(self.divisions):
 			self.slices.append((100 / self.divisions) * j / 100.0)
 			#print(j)
 		self.slices.append(1.0)
 		#print "divisions", self.divisions
 		#print "slices", self.slices
-		
+
 	def clear_level(self):
 		self.boxes.clear()
 		del self.slices[:]

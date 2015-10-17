@@ -171,9 +171,9 @@ class SpideyGame(Widget):
 		self.beetle_system.start()
 		self.spider_system.start()
 		self.tyrant_system.start()
-		print("beetle system started")
-		print("spider system started")
-		print("tyrant system started")
+		#print("beetle system started")
+		#print("spider system started")
+		#print("tyrant system started")
 
 	# stop main game
 	def stop_game(self, *args):
@@ -183,18 +183,18 @@ class SpideyGame(Widget):
 		self.beetle_system.stop()
 		self.spider_system.stop()
 		self.tyrant_system.stop()
-		print("beetle system stopped")
-		print("spider system stopped")
-		print("tyrant system stopped")
+		#print("beetle system stopped")
+		#print("spider system stopped")
+		#print("tyrant system stopped")
 
 	# pause main game
 	def pause_game(self):
 		self.beetle_system.pause()
 		self.spider_system.stop()
 		self.tyrant_system.stop()
-		print("beetle system paused")
-		print("spider system stopped")
-		print("tyrant system stopped")
+		#print("beetle system paused")
+		#print("spider system stopped")
+		#print("tyrant system stopped")
 
 		state = 'pause'
 		self.set_state(state)
@@ -206,9 +206,9 @@ class SpideyGame(Widget):
 		self.beetle_system.resume()
 		self.spider_system.start()
 		self.tyrant_system.start()
-		print("beetle system resumed")
-		print("spider system started")
-		print("tyrant system started")
+		#print("beetle system resumed")
+		#print("spider system started")
+		#print("tyrant system started")
 
 	# keyboard rules
 	def _keyboard_closed(self):
@@ -248,13 +248,7 @@ class SpideyGame(Widget):
 		elif self.screens.current == 'message':
 			if keycode[1] == 'enter' and base.transition:
 					base.transition = False
-					base.clear_level()
-					base.initiate_level()
-					self.boxes.clear_background()
-					self.web.clear_web()
-					print "current level", base.current_level, base.LEVELS.index(base.current_level)
-					print "what level I'm drawing", base.LEVEL_MAP[base.LEVELS.index(base.current_level)]
-					self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
+					self.level_transition()
 					self.screens.current = 'main'
 					self.start_game()
 			if keycode[1] == 'enter':
@@ -289,6 +283,16 @@ class SpideyGame(Widget):
 			self.web.draw_web()
 			#print "touched"
 			#return True
+
+	def level_transition(self):
+		base.clear_level()
+		base.initiate_level()
+		self.boxes.clear_background()
+		self.web.clear_web()
+		#print "current level", base.current_level
+		#print "LEVEL_MAP choose", base.LEVELS.index(base.current_level)
+		#print "what level I'm drawing", base.LEVEL_MAP[base.LEVELS.index(base.current_level)]
+		self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
 
 class StatusPanel(Widget):
 	fps = StringProperty(None)

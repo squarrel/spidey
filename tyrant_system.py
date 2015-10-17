@@ -13,7 +13,7 @@ base = Base()
 
 class TyrantSystem(GameSystem):
 
-	system_id = StringProperty('tyrant_system')
+	#system_id = StringProperty('tyrant_system')
 	tyrants = {}
 	active = False
 	on_mark = False
