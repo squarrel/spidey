@@ -28,18 +28,22 @@ class Base(object):
 			win_x, win_y, win_x, 0, 0, 0
 			]
 	LEV_2 = [
-			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
-			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
-			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
-			win_x, (win_y/divisions)*4, 0, (win_y/divisions)*4,
+			0, 0, 0, win_y/5, win_x, win_y/5, # hardcoded bug here
+			win_x, (win_y/5)*2, 0, (win_y/5)*2,
+			0, (win_y/5)*3, win_x, (win_y/5)*3,
+			win_x, (win_y/5)*4, 0, (win_y/5)*4,
 			0, win_y, win_x, win_y, 0, win_y,
-			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
-			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
-			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
-			(win_x/divisions)*4, win_y, (win_x/divisions)*4, 0,
+			0, 0, win_x/5, 0, win_x/5, win_y,
+			(win_x/5)*2, win_y, (win_x/5)*2, 0,
+			(win_x/5)*3, 0, (win_x/5)*3, win_y,
+			(win_x/5)*4, win_y, (win_x/5)*4, 0,
 			win_x, 0, win_x, win_y, win_x, 0, 0, 0
 			]
-	LEVEL_MAP = [LEV_1, LEV_2]
+	LEV_3 = [
+			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
+			win_x, win_y
+			]
+	LEVEL_MAP = [LEV_1, LEV_2, LEV_3]
 
 	def __init__(self, **kwargs):
 		super(Base, self).__init__(**kwargs)

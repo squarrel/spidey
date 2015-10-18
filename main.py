@@ -123,10 +123,16 @@ class SpideyGame(Widget):
 				self.message = "Congratulations! You passed to the 2nd level."
 				base.transition = True
 				self.screens.current = 'message'
-			elif self.beetle_system.score > 14 and base.current_level == base.LEVELS[1]:
+			elif self.beetle_system.score > 6 and base.current_level == base.LEVELS[1]:
 				self.stop_game()
 				base.current_level = base.LEVELS[2]
 				self.message = "Congratulations! You passed to the 3rd level."
+				base.transition = True
+				self.screens.current = 'message'
+			elif self.beetle_system.score > 10 and base.current_level == base.LEVELS[2]:
+				self.stop_game()
+				base.current_level = base.LEVELS[3]
+				self.message = "Congratulations! You passed to the 4rd level."
 				base.transition = True
 				self.screens.current = 'message'
 

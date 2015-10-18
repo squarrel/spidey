@@ -27,7 +27,7 @@ class Web(Widget):
 		# draw the web
 		with self.canvas:
 			Color(.4,.4,1,1)
-			Line(points=self.points, joint='round', cap='round', width=4, close=False)
+			Line(points=self.points, joint='round', cap='round', width=3, close=False)
 			Color(.8,.8,.8,1)
 			Line(points=self.points, close=False)
 
