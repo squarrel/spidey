@@ -10,25 +10,25 @@ win_y = Window.size[1]
 class Base(object):
 
 	LEVELS = [16, 25, 36, 49, 64]
-	current_level = LEVELS[0]
+	current_level = LEVELS[0] # bug here?
 	boxes = {}
 	slices = []
 	intersections = {}
-	divisions = int(math.sqrt(current_level))
+	divisions = int(math.sqrt(current_level)) # hardcoded bug here
 	switch = None
 	transition = True
 	LEV_1 = [
-			0, 0, 0, win_y/divisions, win_x, win_y/divisions, 
-			win_x, (win_y/divisions)*2, 0, (win_y/divisions)*2,
-			0, (win_y/divisions)*3, win_x, (win_y/divisions)*3,
+			0, 0, 0, win_y/4, win_x, win_y/4, 
+			win_x, (win_y/4)*2, 0, (win_y/4)*2,
+			0, (win_y/4)*3, win_x, (win_y/4)*3,
 			win_x, win_y, 0, win_y,
-			0, 0, win_x/divisions, 0, win_x/divisions, win_y,
-			(win_x/divisions)*2, win_y, (win_x/divisions)*2, 0,
-			(win_x/divisions)*3, 0, (win_x/divisions)*3, win_y,
+			0, 0, win_x/4, 0, win_x/4, win_y,
+			(win_x/4)*2, win_y, (win_x/4)*2, 0,
+			(win_x/4)*3, 0, (win_x/4)*3, win_y,
 			win_x, win_y, win_x, 0, 0, 0
 			]
 	LEV_2 = [
-			0, 0, 0, win_y/5, win_x, win_y/5, # hardcoded bug here
+			0, 0, 0, win_y/5, win_x, win_y/5,
 			win_x, (win_y/5)*2, 0, (win_y/5)*2,
 			0, (win_y/5)*3, win_x, (win_y/5)*3,
 			win_x, (win_y/5)*4, 0, (win_y/5)*4,
@@ -40,7 +40,7 @@ class Base(object):
 			win_x, 0, win_x, win_y, win_x, 0, 0, 0
 			]
 	LEV_3 = [
-			0, 0, 0, win_y/divisions, win_x, win_y/divisions,
+			0, 0, 0, win_y/6, win_x, win_y/6,
 			win_x, win_y
 			]
 	LEVEL_MAP = [LEV_1, LEV_2, LEV_3]
@@ -68,3 +68,4 @@ class Base(object):
 		del self.slices[:]
 		self.intersections.clear()
 		self.divisions = int(math.sqrt(self.current_level))
+		#print "--->", self.divisions

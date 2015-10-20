@@ -13,7 +13,6 @@ base = Base()
 
 class TyrantSystem(GameSystem):
 
-	#system_id = StringProperty('tyrant_system')
 	tyrants = {}
 	active = False
 	on_mark = False
@@ -26,6 +25,13 @@ class TyrantSystem(GameSystem):
 		self.active = True
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
+		Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
+
+	def check_vars(self, dt):
+		print "tyrant boxes", base.boxes
+		print "tyrant slices", base.slices
+		print "tyrant current_level", base.current_level
+		print "tyrant divisions", base.divisions
 
 	def stop(self):
 		self.active = False

@@ -16,7 +16,6 @@ base = Base()
 
 class BeetleSystem(GameSystem):
 
-	#system_id = StringProperty('beetle_system')
 	beetles = {}
 	score = 0
 	score_ = StringProperty(str(score))
@@ -29,6 +28,13 @@ class BeetleSystem(GameSystem):
 		self.active = True
 		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
+		#Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
+
+	def check_vars(self, dt):
+		#print "beetle boxes", base.boxes
+		#print "beetle slices", base.slices
+		print "beetle current_level", base.current_level
+		print "beetle divisions", base.divisions
 
 	def stop(self):
 		self.active = False

@@ -12,6 +12,9 @@ base = Base()
 class Boxes(Widget):
 
 	def print_boxes(self, x, y):
+		#print "boxes current_level, divisions", base.current_level, base.divisions
+		#print "slices", base.slices
+		#print "boxes", base.boxes
 		i = 1
 		j = 1
 		k = 1
@@ -43,7 +46,6 @@ class Boxes(Widget):
 		k = 1
 		#print "base.slices", base.slices
 		#print "base.boxes", base.boxes
-		#print "base.divisions", base.divisions
 		while i <= len(base.slices) - 1:
 			#print "i", i
 			while j <= len(base.slices) - 1:
@@ -65,7 +67,7 @@ class Boxes(Widget):
 		# clear canvas
 		self.clear_background()
 
-		print "lev", lev
+		#print "lev", lev
 		with self.canvas.before:
 			color = Color(.7, .7, .7, .3)
 			Line(points=lev, width=3)

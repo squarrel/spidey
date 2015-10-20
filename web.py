@@ -39,7 +39,7 @@ class Web(Widget):
 			#print('len(crosspoints)', len(solve.crosspoints))
 			#print('crosspoints', solve.crosspoints)
 			#print('draw')
-			for i in xrange(0, len(solve.crosspoints)): # <--- here bug
+			for i in xrange(0, len(solve.crosspoints)):
 				#print('to draw')
 				#print "len(crosspoints)", len(solve.crosspoints), "prev_len", self.prev_len
 				#print solve.crosspoints[-i][0], solve.crosspoints[-i][1]
