@@ -10,6 +10,7 @@ SpideyGame:
 	boxes: boxes
 	web: web
 	panel: panel
+	base: base
 
 	GameWorld:
 		id: gameworld
@@ -39,6 +40,7 @@ SpideyGame:
 			id: beetle_system
 			system_id: 'beetle_system'
 			boxes: boxes
+			base: base
 			gameworld: gameworld
 			updateable: True
 		TyrantSystem:
@@ -46,16 +48,19 @@ SpideyGame:
 			system_id: 'tyrant_system'
 			spider_system: spider_system
 			boxes: boxes
+			base: base
 			gameworld: gameworld
 			updateable: True
 		Boxes:
 			id: boxes
 			system_id: 'boxes'
+			base: base
 		Web:
 			id: web
 			system_id: 'web'
 			spider_system: spider_system
 			boxes: boxes
+			base: base
 		Panel:
 			id: panel
 			system_id: 'panel'
@@ -71,6 +76,9 @@ SpideyGame:
 				size: root.size[0], root.size[1]
 				font_size: root.size[1] * .04
 				color: (1, 1, 1, 1)
+		Base:
+			id: base
+			system_id: 'base'
 
 	GameScreenManager:
 		id: gamescreenmanager

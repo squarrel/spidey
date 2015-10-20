@@ -9,7 +9,6 @@ from base import Base
 
 win_x = Window.size[0]
 win_y = Window.size[1]
-base = Base()
 
 class TyrantSystem(GameSystem):
 
@@ -25,13 +24,13 @@ class TyrantSystem(GameSystem):
 		self.active = True
 		self.draw_stuff()
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
-		Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
+		#Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
 
 	def check_vars(self, dt):
-		print "tyrant boxes", base.boxes
-		print "tyrant slices", base.slices
-		print "tyrant current_level", base.current_level
-		print "tyrant divisions", base.divisions
+		print "tyrant boxes", self.base.boxes
+		print "tyrant slices", self.base.slices
+		print "tyrant current_level", self.base.current_level
+		print "tyrant divisions", self.base.divisions
 
 	def stop(self):
 		self.active = False
@@ -98,7 +97,7 @@ class TyrantSystem(GameSystem):
 				spider_x = round(self.spider_system.x * win_x, 2)
 				spider_y = round(self.spider_system.y * win_y, 2)
 				spider_box = self.boxes.current_box(spider_x, spider_y)
-				div = base.divisions
+				div = self.base.divisions
 				#print "base.divisions", base.divisions
 				# current row where the tyrant is
 				tyrant_row = (tyrant_box / div) + 1

@@ -12,7 +12,6 @@ from panel import Panel
 
 win_x = Window.size[0]
 win_y = Window.size[1]
-base = Base()
 
 class BeetleSystem(GameSystem):
 
@@ -31,10 +30,10 @@ class BeetleSystem(GameSystem):
 		#Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
 
 	def check_vars(self, dt):
-		#print "beetle boxes", base.boxes
-		#print "beetle slices", base.slices
-		print "beetle current_level", base.current_level
-		print "beetle divisions", base.divisions
+		#print "beetle boxes", self.base.boxes
+		#print "beetle slices", self.base.slices
+		print "beetle current_level", self.base.current_level
+		print "beetle divisions", self.base.divisions
 
 	def stop(self):
 		self.active = False
@@ -103,7 +102,7 @@ class BeetleSystem(GameSystem):
 					pos = entities[entity_id].position
 					render_comp = entities[entity_id].renderer
 					current_box = self.boxes.current_box(pos.x, pos.y)
-					div = base.divisions
+					div = self.base.divisions
 					dist_x = win_x / 20
 					dist_y = win_y / 20
 					#print("current_box", current_box)
@@ -111,12 +110,12 @@ class BeetleSystem(GameSystem):
 					# for a given direction and current position
 					if self.beetles[entity_id][0] == 'N':
 						# calculate the next box
-						next_box = current_box + base.divisions
+						next_box = current_box + self.base.divisions
 						#print dir_to, current_box, next_box
 
-						if next_box in xrange(1, base.current_level):
+						if next_box in xrange(1, self.base.current_level):
 							# if the next box is a trap
-							if base.boxes[next_box]:
+							if self.base.boxes[next_box]:
 								# when a beetle reaches it
 								if pos.y > (((next_box - 1) / div) * (win_y / div)) - dist_y:
 									# make a turn to a different direction
@@ -152,10 +151,10 @@ class BeetleSystem(GameSystem):
 							pos.y += .95
 
 					elif self.beetles[entity_id][0] == 'S':
-						next_box = current_box - base.divisions
+						next_box = current_box - self.base.divisions
 						#print dir_to, current_box, next_box
-						if next_box in xrange(1, base.current_level):
-							if base.boxes[next_box]:
+						if next_box in xrange(1, self.base.current_level):
+							if self.base.boxes[next_box]:
 								if pos.y < (((next_box - 1) / div) * (win_y / div)) + win_y / div + dist_y:
 									self.beetles[entity_id][0] = choice(['W', 'E'])
 									self.beetles[entity_id][1] -= 1
@@ -183,8 +182,8 @@ class BeetleSystem(GameSystem):
 					elif self.beetles[entity_id][0] == 'W':
 						next_box = current_box - 1
 						#print dir_to, current_box, next_box
-						if next_box in xrange(1, base.current_level):
-							if base.boxes[next_box]:
+						if next_box in xrange(1, self.base.current_level):
+							if self.base.boxes[next_box]:
 								if pos.x < (((next_box - 1) % div) * (win_x / div)) + win_x / div + dist_x:
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1
@@ -212,8 +211,8 @@ class BeetleSystem(GameSystem):
 					elif self.beetles[entity_id][0] == 'E':
 						next_box = current_box + 1
 						#print dir_to, current_box, next_box
-						if next_box in xrange(1, base.current_level):
-							if base.boxes[next_box]:
+						if next_box in xrange(1, self.base.current_level):
+							if self.base.boxes[next_box]:
 								if pos.x > (((next_box - 1) % div) * (win_x / div)) - dist_x:
 									self.beetles[entity_id][0] = choice(['N', 'S'])
 									self.beetles[entity_id][1] -= 1

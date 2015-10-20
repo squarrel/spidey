@@ -1,5 +1,7 @@
 from kivy.core.window import Window
+from kivy.uix.widget import Widget
 from kivy.properties import ListProperty
+from kivy.factory import Factory
 import math
 from helpers import solve
 
@@ -7,7 +9,7 @@ from helpers import solve
 win_x = Window.size[0]
 win_y = Window.size[1]
 
-class Base(object):
+class Base(Widget):
 
 	LEVELS = [16, 25, 36, 49, 64]
 	current_level = LEVELS[0] # bug here?
@@ -45,9 +47,6 @@ class Base(object):
 			]
 	LEVEL_MAP = [LEV_1, LEV_2, LEV_3]
 
-	def __init__(self, **kwargs):
-		super(Base, self).__init__(**kwargs)
-
 	def initiate_level(self):
 		# prepare boxes
 		for i in xrange(1, self.current_level + 1):
@@ -69,3 +68,5 @@ class Base(object):
 		self.intersections.clear()
 		self.divisions = int(math.sqrt(self.current_level))
 		#print "--->", self.divisions
+
+#Factory.register('Base', cls=Base)

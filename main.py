@@ -29,7 +29,6 @@ from panel import Panel
 texture_manager.load_atlas('assets/beetles.atlas')
 win_x = Window.size[0]
 win_y = Window.size[1]
-base = Base()
 
 class SpideyGame(Widget):
 
@@ -60,8 +59,8 @@ class SpideyGame(Widget):
 		self.load_models()
 		state = 'stop'
 		self.set_state(state)
-		base.initiate_level()
-		self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
+		self.base.initiate_level()
+		self.boxes.draw_background(self.base.LEVEL_MAP[self.base.LEVELS.index(self.base.current_level)])
 		print("level initiated", win_x, "x", win_y)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -76,9 +75,9 @@ class SpideyGame(Widget):
 	def update(self, dt):
 		# depending on wich screen is active, perform specific updates
 		if self.screens.current == 'menu':
-			if base.switch == 'play':
+			if self.base.switch == 'play':
 				self.start_game()
-				base.switch = None
+				self.base.switch = None
 
 		elif self.screens.current == 'main':
 			# character movement, background texture movement, animation
@@ -104,42 +103,42 @@ class SpideyGame(Widget):
 
 			# if one of the switches is turned, 
 			# perform an action and turn it off.
-			if base.switch == 'play':
+			if self.base.switch == 'play':
 				self.start_game()
-				base.switch = None
-			elif base.switch == 'pause':
+				self.base.switch = None
+			elif self.base.switch == 'pause':
 				self.pause_game()
-				base.switch = None
-			elif base.switch == 'resume':
+				self.base.switch = None
+			elif self.base.switch == 'resume':
 				self.resume_game()
-				base.switch = None
-			elif base.switch == 'stop':
+				self.base.switch = None
+			elif self.base.switch == 'stop':
 				self.stop_game()
-				base.switch = None
+				self.base.switch = None
 
-			if self.beetle_system.score > 2 and base.current_level == base.LEVELS[0]:
+			if self.beetle_system.score > 2 and self.base.current_level == self.base.LEVELS[0]:
 				self.stop_game()
-				base.current_level = base.LEVELS[1]
+				self.base.current_level = self.base.LEVELS[1]
 				self.message = "Congratulations! You passed to the 2nd level."
-				base.transition = True
+				self.base.transition = True
 				self.screens.current = 'message'
-			elif self.beetle_system.score > 6 and base.current_level == base.LEVELS[1]:
+			elif self.beetle_system.score > 6 and self.base.current_level == self.base.LEVELS[1]:
 				self.stop_game()
-				base.current_level = base.LEVELS[2]
+				self.base.current_level = base.LEVELS[2]
 				self.message = "Congratulations! You passed to the 3rd level."
-				base.transition = True
+				self.base.transition = True
 				self.screens.current = 'message'
-			elif self.beetle_system.score > 10 and base.current_level == base.LEVELS[2]:
+			elif self.beetle_system.score > 10 and self.base.current_level == self.base.LEVELS[2]:
 				self.stop_game()
-				base.current_level = base.LEVELS[3]
+				self.base.current_level = self.base.LEVELS[3]
 				self.message = "Congratulations! You passed to the 4rd level."
-				base.transition = True
+				self.base.transition = True
 				self.screens.current = 'message'
 
 		elif self.screens.current == 'message':
-			if base.switch == 'stop':
+			if self.base.switch == 'stop':
 				self.stop_game()
-				base.switch = None
+				self.base.switch = None
 
 		elif self.screens.current == 'settings':
 			pass
@@ -242,27 +241,27 @@ class SpideyGame(Widget):
 
 			elif keycode[1] == 'escape':
 				self.screens.switch = 'message'
-				base.switch = 'pause'
+				self.base.switch = 'pause'
 
 		elif self.screens.current == 'menu':
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-				base.switch = 'play'
+				self.base.switch = 'play'
 			elif keycode[1] == 'escape':
 				exit()
 
 		elif self.screens.current == 'message':
-			if keycode[1] == 'enter' and base.transition:
-					base.transition = False
+			if keycode[1] == 'enter' and self.base.transition:
+					self.base.transition = False
 					self.level_transition()
 					self.screens.current = 'main'
 					self.start_game()
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-				base.switch = 'resume'
+				self.base.switch = 'resume'
 			if keycode[1] == 'escape':
 				self.screens.current = 'menu'
-				base.switch = 'stop'
+				self.base.switch = 'stop'
 
 		return True
 
@@ -291,14 +290,14 @@ class SpideyGame(Widget):
 			#return True
 
 	def level_transition(self):
-		base.clear_level()
-		base.initiate_level()
+		self.base.clear_level()
+		self.base.initiate_level()
 		self.boxes.clear_background()
 		self.web.clear_web()
 		#print "current level", base.current_level
 		#print "LEVEL_MAP choose", base.LEVELS.index(base.current_level)
 		#print "what level I'm drawing", base.LEVEL_MAP[base.LEVELS.index(base.current_level)]
-		self.boxes.draw_background(base.LEVEL_MAP[base.LEVELS.index(base.current_level)])
+		self.boxes.draw_background(self.base.LEVEL_MAP[self.base.LEVELS.index(self.base.current_level)])
 
 class StatusPanel(Widget):
 	fps = StringProperty(None)
@@ -314,26 +313,26 @@ class StatusPanel(Widget):
 class MenuScreen(Screen):
 
 	def start_game(self):
-		base.switch = 'play'
+		self.base.switch = 'play'
 
 class MainScreen(Screen):
 
 	def pause_game(self):
-		base.switch = 'pause'
+		self.base.switch = 'pause'
 
 class MessageScreen(Screen):
 
 	def resume_game(self):
-		if base.transition:
-			base.transition = False
-			base.clear_level()
-			base.initiate_level()
-			base.switch = 'play'
+		if self.base.transition:
+			self.base.transition = False
+			self.base.clear_level()
+			self.base.initiate_level()
+			self.base.switch = 'play'
 			return
-		base.switch = 'resume'
+		self.base.switch = 'resume'
 
 	def stop_game(self):
-		base.switch = 'stop'
+		self.base.switch = 'stop'
 
 class Settings(Screen):
 	pass
