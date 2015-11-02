@@ -1,7 +1,6 @@
 # Spidey the Scientist
 
 from kivy.app import App
-print('imported kivy')
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.core.window import Window
@@ -75,9 +74,7 @@ class SpideyGame(Widget):
 	def update(self, dt):
 		# depending on wich screen is active, perform specific updates
 		if self.screens.current == 'menu':
-			if self.base.switch == 'play':
-				self.start_game()
-				self.base.switch = None
+			pass
 
 		elif self.screens.current == 'main':
 			# character movement, background texture movement, animation
@@ -101,21 +98,6 @@ class SpideyGame(Widget):
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'
 
-			# if one of the switches is turned, 
-			# perform an action and turn it off.
-			if self.base.switch == 'play':
-				self.start_game()
-				self.base.switch = None
-			elif self.base.switch == 'pause':
-				self.pause_game()
-				self.base.switch = None
-			elif self.base.switch == 'resume':
-				self.resume_game()
-				self.base.switch = None
-			elif self.base.switch == 'stop':
-				self.stop_game()
-				self.base.switch = None
-
 			if self.beetle_system.score > 2 and self.base.current_level == self.base.LEVELS[0]:
 				self.stop_game()
 				self.base.current_level = self.base.LEVELS[1]
@@ -124,7 +106,7 @@ class SpideyGame(Widget):
 				self.screens.current = 'message'
 			elif self.beetle_system.score > 6 and self.base.current_level == self.base.LEVELS[1]:
 				self.stop_game()
-				self.base.current_level = base.LEVELS[2]
+				self.base.current_level = self.base.LEVELS[2]
 				self.message = "Congratulations! You passed to the 3rd level."
 				self.base.transition = True
 				self.screens.current = 'message'
@@ -136,9 +118,7 @@ class SpideyGame(Widget):
 				self.screens.current = 'message'
 
 		elif self.screens.current == 'message':
-			if self.base.switch == 'stop':
-				self.stop_game()
-				self.base.switch = None
+			pass
 
 		elif self.screens.current == 'settings':
 			pass
@@ -241,12 +221,12 @@ class SpideyGame(Widget):
 
 			elif keycode[1] == 'escape':
 				self.screens.switch = 'message'
-				self.base.switch = 'pause'
+				self.pause_game()
 
 		elif self.screens.current == 'menu':
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-				self.base.switch = 'play'
+				self.start_game()
 			elif keycode[1] == 'escape':
 				exit()
 
@@ -258,10 +238,10 @@ class SpideyGame(Widget):
 					self.start_game()
 			if keycode[1] == 'enter':
 				self.screens.current = 'main'
-				self.base.switch = 'resume'
+				self.resume_game()
 			if keycode[1] == 'escape':
 				self.screens.current = 'menu'
-				self.base.switch = 'stop'
+				self.stop_game()
 
 		return True
 
@@ -310,29 +290,19 @@ class StatusPanel(Widget):
 		self.fps = str(int(Clock.get_fps()))
 		Clock.schedule_once(self.update_fps, .05)
 
-class MenuScreen(Screen):
-
-	def start_game(self):
-		self.base.switch = 'play'
-
-class MainScreen(Screen):
-
-	def pause_game(self):
-		self.base.switch = 'pause'
-
 class MessageScreen(Screen):
 
 	def resume_game(self):
-		if self.base.transition:
-			self.base.transition = False
-			self.base.clear_level()
-			self.base.initiate_level()
-			self.base.switch = 'play'
+		if App.get_running_app().root.base.transition:
+			App.get_running_app().root.base.transition = False
+			App.get_running_app().root.base.clear_level()
+			App.get_running_app().root.base.initiate_level()
+			App.get_running_app().root.start_game()
 			return
-		self.base.switch = 'resume'
+		App.get_running_app().root.resume_game()
 
 	def stop_game(self):
-		self.base.switch = 'stop'
+		App.get_running_app().root.stop_game()
 
 class Settings(Screen):
 	pass

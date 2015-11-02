@@ -114,7 +114,7 @@ SpideyGame:
 			size_hint: (.2, .1)
 			pos_hint: {'x': .4, 'y': .65}
 			on_press: root.manager.current = 'main'
-			on_release: root.start_game()
+			on_release: app.root.start_game()
 		Button:
 			text: 'Settings'
 			size_hint: (.2, .1)
@@ -137,7 +137,7 @@ SpideyGame:
 			text: 'Pause'
 			size_hint: (.2, .1)
 			pos_hint: {'x': .8, 'y': .9}
-			on_press: root.pause_game()
+			on_press: app.root.pause_game()
 			on_release: root.manager.current = 'message'
 
 <MessageScreen@GameScreen>:

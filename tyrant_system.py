@@ -91,7 +91,7 @@ class TyrantSystem(GameSystem):
 				pos = entities[entity_id].position
 				direction = self.tyrants[entity_id][0]
 				render_comp = entities[entity_id].renderer
-				
+
 				tyrant_box = self.boxes.current_box(pos.x, pos.y)
 				#print "tyrant_box", tyrant_box
 				spider_x = round(self.spider_system.x * win_x, 2)
@@ -113,13 +113,13 @@ class TyrantSystem(GameSystem):
 				#print "spider_row", spider_row
 
 				if direction == 'N':
-					pos.y += .95
+					pos.y += .30
 				elif direction == 'S':
-					pos.y -= .95
+					pos.y -= .30
 				elif direction == 'W':
-					pos.x -= .95
+					pos.x -= .30
 				elif direction == 'E':
-					pos.x += .95
+					pos.x += .30
 
 				if tyrant_row == spider_row:
 					if pos.x > spider_x:
