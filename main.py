@@ -6,6 +6,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.properties import StringProperty, NumericProperty, ListProperty
 from kivy.uix.screenmanager import Screen
+from kivy import platform
 
 import kivent_core
 import kivent_cymunk
@@ -35,9 +36,10 @@ class SpideyGame(Widget):
 	go_left = False
 	go_up = False
 	go_down = False
-	speed = .003
+	speed = 1
 	message = StringProperty('')
 	win_y = win_y
+	destination = [None, None]
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -79,24 +81,31 @@ class SpideyGame(Widget):
 		elif self.screens.current == 'main':
 			# character movement, background texture movement, animation
 			if self.go_right:
-				if self.spider_system.x * win_x < win_x - 5:
+				if self.spider_system.x < win_x - 5:
 					self.spider_system.x += self.speed
 				#self.t += .1
 				#self.ani = 'pas_ani.zip'
 			elif self.go_left:
-				if self.spider_system.x * win_x > 5:
+				if self.spider_system.x > 5:
 					self.spider_system.x -= self.speed
 				#self.t -= .1
 				#self.ani = 'pas_ani.zip'
 			elif self.go_up:
-				if self.spider_system.y * win_y < win_y - 5:
+				if self.spider_system.y < win_y - 5:
 					self.spider_system.y += self.speed
 				#self.ani = 'pas_ani.zip'	
 			elif self.go_down:
-				if self.spider_system.y * win_y > 5:
+				if self.spider_system.y > 5:
 					self.spider_system.y -= self.speed
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'
+
+			if self.destination[0] == self.spider_system.x:
+				go_right = False
+				go_left = False
+			if self.destination[1] == self.spider_system.y:
+				go_up = False
+				go_down = False
 
 			if self.beetle_system.score > 2 and self.base.current_level == self.base.LEVELS[0]:
 				self.stop_game()
@@ -263,10 +272,15 @@ class SpideyGame(Widget):
 		if super(SpideyGame, self).on_touch_down(touch):
 			return True
 		touch.grab(self)
-		#self.points = self.points + list([win_x * char_x, win_y * char_y]) 
+		self.destination[0] = touch.x
 		if self.screens.current == 'main':
-			self.web.draw_web()
-			#print "touched"
+			if platform == 'linux':
+				if touch.x > self.spider_system.x:
+					self.go_right = True
+				elif touch.x < self.spider_system.x:
+					self.go_left = True
+			else:
+				self.web.draw_web()
 			#return True
 
 	def level_transition(self):
@@ -274,9 +288,9 @@ class SpideyGame(Widget):
 		self.base.initiate_level()
 		self.boxes.clear_background()
 		self.web.clear_web()
-		#print "current level", base.current_level
-		#print "LEVEL_MAP choose", base.LEVELS.index(base.current_level)
-		#print "what level I'm drawing", base.LEVEL_MAP[base.LEVELS.index(base.current_level)]
+		#print "current level", self.base.current_level
+		#print "LEVEL_MAP choose", self.base.LEVELS.index(base.current_level)
+		#print "what level I'm drawing", self.base.LEVEL_MAP[base.LEVELS.index(base.current_level)]
 		self.boxes.draw_background(self.base.LEVEL_MAP[self.base.LEVELS.index(self.base.current_level)])
 
 class StatusPanel(Widget):

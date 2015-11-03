@@ -18,8 +18,8 @@ class Web(Widget):
 	prev_len = 0
 
 	def draw_web(self):
-		a = round(win_x * self.spider_system.x, 2)
-		b = round(win_y * self.spider_system.y, 2)
+		a = round(self.spider_system.x, 2)
+		b = round(self.spider_system.y, 2)
 		#print "a, b", a, b
 		self.points = self.points + list([a, b])
 		#print "self.points", self.points

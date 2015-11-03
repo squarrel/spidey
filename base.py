@@ -17,7 +17,6 @@ class Base(Widget):
 	slices = []
 	intersections = {}
 	divisions = int(math.sqrt(current_level)) # hardcoded bug here
-	switch = None
 	transition = True
 	LEV_1 = [
 			0, 0, 0, win_y/4, win_x, win_y/4, 

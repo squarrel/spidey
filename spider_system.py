@@ -10,8 +10,8 @@ win_y = Window.size[1]
 
 class SpiderSystem(GameSystem):
 
-	x = NumericProperty(.15)
-	y = NumericProperty(.55)
+	x = NumericProperty(win_x/2)
+	y = NumericProperty(win_y/2)
 
 	def __init__(self, *args, **kwargs):
 		super(SpiderSystem, self).__init__(*args, **kwargs)
@@ -35,7 +35,7 @@ class SpiderSystem(GameSystem):
 	def create_spider(self, x, y):
 		vert_mesh_key = 'beetle_left'
 		create_dict = {
-			'position': (win_x * x, win_y * y),
+			'position': (win_x, win_y),
 			'renderer': {'texture': 'beetle_left',
 						'vert_mesh_key': vert_mesh_key},
 			'spider_system': {},
@@ -49,8 +49,8 @@ class SpiderSystem(GameSystem):
 			if component is not None:
 				entity_id = component.entity_id
 				pos = entities[entity_id].position
-				pos.x = win_x * self.x
-				pos.y = win_y * self.y
+				pos.x = self.x
+				pos.y = self.y
 
 
 Factory.register('SpiderSystem', cls=SpiderSystem)

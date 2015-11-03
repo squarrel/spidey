@@ -94,8 +94,8 @@ class TyrantSystem(GameSystem):
 
 				tyrant_box = self.boxes.current_box(pos.x, pos.y)
 				#print "tyrant_box", tyrant_box
-				spider_x = round(self.spider_system.x * win_x, 2)
-				spider_y = round(self.spider_system.y * win_y, 2)
+				spider_x = round(self.spider_system.x, 2)
+				spider_y = round(self.spider_system.y, 2)
 				spider_box = self.boxes.current_box(spider_x, spider_y)
 				div = self.base.divisions
 				#print "base.divisions", base.divisions
