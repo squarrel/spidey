@@ -36,7 +36,7 @@ class SpideyGame(Widget):
 	go_left = False
 	go_up = False
 	go_down = False
-	speed = 1
+	speed = 3
 	message = StringProperty('')
 	win_y = win_y
 	destination = [None, None]
@@ -90,7 +90,7 @@ class SpideyGame(Widget):
 					self.spider_system.x -= self.speed
 				#self.t -= .1
 				#self.ani = 'pas_ani.zip'
-			elif self.go_up:
+			if self.go_up:
 				if self.spider_system.y < win_y - 5:
 					self.spider_system.y += self.speed
 				#self.ani = 'pas_ani.zip'	
@@ -100,12 +100,26 @@ class SpideyGame(Widget):
 				#self.ani = 'pas_ani.zip'	
 			#else: self.ani = 'data/pauk.jpg'
 
-			if self.destination[0] == self.spider_system.x:
-				go_right = False
-				go_left = False
-			if self.destination[1] == self.spider_system.y:
-				go_up = False
-				go_down = False
+			if self.go_right:
+				if self.destination[0] < self.spider_system.x:
+					self.go_right = False
+					self.destination[0] = None
+					self.web.draw_web()
+			elif self.go_left:
+				if self.destination[0] > self.spider_system.x:
+					self.go_left = False
+					self.destination[0] = None
+					self.web.draw_web()
+			if self.go_up:
+				if self.destination[1] < self.spider_system.y:
+					self.go_up = False
+					self.destination[1] = None
+					self.web.draw_web()
+			elif self.go_down:
+				if self.destination[1] > self.spider_system.y:
+					self.go_down = False
+					self.destination[1] = None
+					self.web.draw_web()
 
 			if self.beetle_system.score > 2 and self.base.current_level == self.base.LEVELS[0]:
 				self.stop_game()
@@ -272,13 +286,18 @@ class SpideyGame(Widget):
 		if super(SpideyGame, self).on_touch_down(touch):
 			return True
 		touch.grab(self)
-		self.destination[0] = touch.x
+		self.destination = [round(touch.x), round(touch.y)]
+		print "destination", self.destination
 		if self.screens.current == 'main':
 			if platform == 'linux':
 				if touch.x > self.spider_system.x:
 					self.go_right = True
 				elif touch.x < self.spider_system.x:
 					self.go_left = True
+				if touch.y > self.spider_system.y:
+					self.go_up = True
+				elif touch.y < self.spider_system.y:
+					self.go_down = True
 			else:
 				self.web.draw_web()
 			#return True
@@ -309,8 +328,7 @@ class MessageScreen(Screen):
 	def resume_game(self):
 		if App.get_running_app().root.base.transition:
 			App.get_running_app().root.base.transition = False
-			App.get_running_app().root.base.clear_level()
-			App.get_running_app().root.base.initiate_level()
+			App.get_running_app().root.level_transition()
 			App.get_running_app().root.start_game()
 			return
 		App.get_running_app().root.resume_game()
