@@ -40,6 +40,7 @@ class SpideyGame(Widget):
 	message = StringProperty('')
 	win_y = win_y
 	destination = [None, None]
+	lev_initiated = False
 
 	def __init__(self, **kwargs):
 		super(SpideyGame, self).__init__(**kwargs)
@@ -62,6 +63,7 @@ class SpideyGame(Widget):
 		self.set_state(state)
 		self.base.initiate_level()
 		self.boxes.draw_background(self.base.LEVEL_MAP[self.base.LEVELS.index(self.base.current_level)])
+		self.lev_initiated = True
 		print("level initiated", win_x, "x", win_y)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 
@@ -101,22 +103,22 @@ class SpideyGame(Widget):
 			#else: self.ani = 'data/pauk.jpg'
 
 			if self.go_right:
-				if self.destination[0] < self.spider_system.x:
+				if self.destination[0] < self.spider_system.x and self.destination[0] != None:
 					self.go_right = False
 					self.destination[0] = None
 					self.web.draw_web()
 			elif self.go_left:
-				if self.destination[0] > self.spider_system.x:
+				if self.destination[0] > self.spider_system.x and self.destination[0] != None:
 					self.go_left = False
 					self.destination[0] = None
 					self.web.draw_web()
 			if self.go_up:
-				if self.destination[1] < self.spider_system.y:
+				if self.destination[1] < self.spider_system.y and self.destination[1] != None:
 					self.go_up = False
 					self.destination[1] = None
 					self.web.draw_web()
 			elif self.go_down:
-				if self.destination[1] > self.spider_system.y:
+				if self.destination[1] > self.spider_system.y and self.destination[1] != None:
 					self.go_down = False
 					self.destination[1] = None
 					self.web.draw_web()
@@ -188,6 +190,7 @@ class SpideyGame(Widget):
 		state = 'stop'
 		self.set_state(state)
 
+		self.stop_spider()
 		self.beetle_system.stop()
 		self.spider_system.stop()
 		self.tyrant_system.stop()
@@ -247,7 +250,7 @@ class SpideyGame(Widget):
 				self.pause_game()
 
 		elif self.screens.current == 'menu':
-			if keycode[1] == 'enter':
+			if keycode[1] == 'enter' and self.lev_initiated:
 				self.screens.current = 'main'
 				self.start_game()
 			elif keycode[1] == 'escape':
@@ -287,7 +290,7 @@ class SpideyGame(Widget):
 			return True
 		touch.grab(self)
 		self.destination = [round(touch.x), round(touch.y)]
-		print "destination", self.destination
+		#print "destination", self.destination
 		if self.screens.current == 'main':
 			if platform == 'linux':
 				if touch.x > self.spider_system.x:
@@ -301,6 +304,12 @@ class SpideyGame(Widget):
 			else:
 				self.web.draw_web()
 			#return True
+
+	def stop_spider(self):
+		self.go_right = False
+		self.go_left = False
+		self.go_up = False
+		self.go_down = False
 
 	def level_transition(self):
 		self.base.clear_level()

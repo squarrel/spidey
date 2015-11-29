@@ -25,7 +25,7 @@ class BeetleSystem(GameSystem):
 
 	def start(self):
 		self.active = True
-		Clock.schedule_interval(self.draw_stuff, 1.0 / 3.0)
+		Clock.schedule_interval(self.draw_stuff, 1.0 / 1.0)
 		Clock.schedule_interval(self.update, 1.0 / 60.0)
 		#Clock.schedule_interval(self.check_vars, 2.0 / 1.0)
 

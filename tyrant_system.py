@@ -15,6 +15,7 @@ class TyrantSystem(GameSystem):
 	tyrants = {}
 	active = False
 	on_mark = False
+	speed = .80
 
 	def __init__(self, *args, **kwargs):
 		super(TyrantSystem, self).__init__(*args, **kwargs)
@@ -113,13 +114,13 @@ class TyrantSystem(GameSystem):
 				#print "spider_row", spider_row
 
 				if direction == 'N':
-					pos.y += .30
+					pos.y += self.speed
 				elif direction == 'S':
-					pos.y -= .30
+					pos.y -= self.speed
 				elif direction == 'W':
-					pos.x -= .30
+					pos.x -= self.speed
 				elif direction == 'E':
-					pos.x += .30
+					pos.x += self.speed
 
 				if tyrant_row == spider_row:
 					if pos.x > spider_x:
